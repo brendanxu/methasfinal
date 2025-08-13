@@ -29,14 +29,7 @@ const nextConfig = {
   
   // 构建优化
   webpack: (config, { dev, isServer }) => {
-    // Framer Motion 优化
-    if (!dev && !isServer) {
-      config.resolve.alias = {
-        ...config.resolve.alias,
-        'framer-motion': 'framer-motion/dist/framer-motion',
-      };
-    }
-    
+    // 移除 Framer Motion 别名配置，让 Next.js 使用默认导入
     return config;
   },
   
