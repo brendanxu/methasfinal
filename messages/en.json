@@ -1,0 +1,73 @@
+{
+  "site": {
+    "title": "Methas - Methane Reduction & Carbon Credit Solutions",
+    "description": "Professional methane reduction technology and carbon credit management solutions provider",
+    "name": "Methas"
+  },
+  "navigation": {
+    "home": "Home",
+    "solutions": "Solutions",
+    "cases": "Case Studies",
+    "insights": "Methas Insights",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "hero": {
+    "headline": "The Future of Methane Reduction",
+    "subheadline": "Professional carbon credit management and methane reduction technology solutions",
+    "cta": "Learn More",
+    "cta_contact": "Get in Touch"
+  },
+  "solutions": {
+    "title": "Solutions",
+    "subtitle": "Comprehensive methane reduction and carbon credit management services",
+    "step1": {
+      "title": "Monitoring & Detection",
+      "description": "Real-time methane emission monitoring using advanced sensor technology and data analytics"
+    },
+    "step2": {
+      "title": "Reduction Technology",
+      "description": "Innovative methane capture and treatment technologies to effectively reduce greenhouse gas emissions"
+    },
+    "step3": {
+      "title": "Carbon Credit Management",
+      "description": "Complete carbon credit quantification, certification, and trading management services"
+    },
+    "step4": {
+      "title": "Compliance Reporting",
+      "description": "Environmental impact reports and compliance documentation meeting international standards"
+    }
+  },
+  "about": {
+    "title": "About Methas",
+    "description": "We are committed to advancing methane reduction and carbon credit management through innovative technology"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "description": "Learn how Methas can help you achieve your carbon reduction goals",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "company": "Company",
+      "message": "Message",
+      "submit": "Send Message",
+      "required": "Required"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 Methas. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "readMore": "Read More",
+    "learnMore": "Learn More"
+  }
+}

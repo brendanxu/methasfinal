@@ -1,0 +1,90 @@
+{
+  "site": "southpole.com",
+  "analysis_date": "2025-01-12",
+  "design_tokens": {
+    "colors": {
+      "primary": {
+        "observed_scheme": "Dark green/forest theme",
+        "accessibility": "High contrast ratios observed",
+        "usage_pattern": "Consistent brand color throughout"
+      },
+      "neutrals": {
+        "whites": "Clean white backgrounds",
+        "grays": "Multiple gray scales for hierarchy",
+        "blacks": "Deep blacks for text contrast"
+      }
+    },
+    "typography": {
+      "fonts": [
+        "Sans-serif primary font family",
+        "Clean, modern typeface"
+      ],
+      "hierarchy": {
+        "h1": "Large, bold headlines",
+        "h2": "Section headers with consistent sizing",
+        "body": "Readable paragraph text",
+        "captions": "Smaller descriptive text"
+      }
+    },
+    "spacing": {
+      "pattern": "Consistent 8px grid system observed",
+      "sections": "Large vertical spacing between sections",
+      "components": "Balanced internal padding"
+    },
+    "layout": {
+      "grid": "12-column responsive grid",
+      "breakpoints": "Mobile-first responsive design",
+      "containers": "Centered content with max-width constraints"
+    }
+  },
+  "animation_patterns": {
+    "transitions": {
+      "hover_effects": "Subtle hover states on interactive elements",
+      "duration_range": "200ms-400ms typical",
+      "easing": "Smooth ease-out curves"
+    },
+    "scroll_triggers": {
+      "fade_in": "Elements fade in on scroll",
+      "parallax": "Subtle background parallax effects",
+      "stagger": "Sequential animation of card elements"
+    },
+    "loading_states": {
+      "skeleton": "Loading placeholder patterns",
+      "progressive": "Progressive image loading"
+    }
+  },
+  "component_patterns": {
+    "navigation": {
+      "type": "Horizontal mega menu with dropdowns",
+      "mobile": "Hamburger menu with overlay",
+      "sticky": "Fixed header on scroll"
+    },
+    "hero": {
+      "layout": "Full-width with background video/image",
+      "content": "Centered text with CTA buttons",
+      "height": "Above-fold hero section"
+    },
+    "cards": {
+      "style": "Clean cards with hover effects",
+      "imagery": "High-quality photographs",
+      "layout": "Grid-based responsive layout"
+    },
+    "forms": {
+      "style": "Embedded iframe forms",
+      "validation": "Real-time field validation",
+      "accessibility": "Proper label associations"
+    }
+  },
+  "performance_indicators": {
+    "image_optimization": "WebP format usage observed",
+    "lazy_loading": "Progressive image loading",
+    "code_splitting": "Modular JavaScript loading",
+    "caching": "CDN asset delivery"
+  },
+  "accessibility_features": {
+    "semantic_html": "Proper heading hierarchy",
+    "aria_labels": "ARIA attributes present",
+    "keyboard_nav": "Keyboard navigation support",
+    "color_contrast": "High contrast ratios maintained"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "site": "addx.co",
+  "analysis_date": "2025-01-12",
+  "design_tokens": {
+    "colors": {
+      "primary": {
+        "observed_scheme": "Modern blue/teal gradient theme",
+        "accent_colors": "Green accents for positive metrics",
+        "usage_pattern": "Gradient backgrounds and accent highlights"
+      },
+      "neutrals": {
+        "whites": "Clean white card backgrounds",
+        "grays": "Light grays for sections",
+        "blacks": "Dark text for readability"
+      }
+    },
+    "typography": {
+      "fonts": [
+        "Modern sans-serif font family",
+        "Clean, readable typeface with good hierarchy"
+      ],
+      "hierarchy": {
+        "h1": "Bold, large headlines with gradient text",
+        "h2": "Clear section headers",
+        "body": "Readable paragraph text",
+        "numbers": "Bold, prominent numerical displays"
+      }
+    },
+    "spacing": {
+      "pattern": "Generous whitespace with consistent rhythm",
+      "sections": "Large vertical margins between content blocks",
+      "components": "Well-padded cards and containers"
+    },
+    "layout": {
+      "grid": "Flexible responsive grid system",
+      "breakpoints": "Mobile-optimized responsive design",
+      "containers": "Full-width sections with centered content"
+    }
+  },
+  "animation_patterns": {
+    "transitions": {
+      "hover_effects": "Smooth hover animations on cards and buttons",
+      "duration_range": "300ms-500ms typical",
+      "easing": "Smooth bezier curves"
+    },
+    "scroll_triggers": {
+      "fade_in": "Content slides in from bottom on scroll",
+      "number_counters": "Animated counting for metrics",
+      "parallax": "Subtle background movement"
+    },
+    "carousel_effects": {
+      "testimonials": "Smooth horizontal scrolling testimonials",
+      "logos": "Continuous logo marquee animation",
+      "auto_play": "Automatic carousel progression"
+    }
+  },
+  "component_patterns": {
+    "navigation": {
+      "type": "Clean horizontal navigation",
+      "mobile": "Simplified mobile menu",
+      "cta": "Prominent 'Create account' button"
+    },
+    "hero": {
+      "layout": "Split layout with text and visual",
+      "content": "Bold headlines with clear value proposition",
+      "cta": "Strong call-to-action placement"
+    },
+    "metrics": {
+      "style": "Large numerical displays with descriptions",
+      "layout": "Horizontal row of key metrics",
+      "emphasis": "Bold typography for numbers"
+    },
+    "testimonials": {
+      "style": "Card-based testimonial carousel",
+      "imagery": "Professional headshots",
+      "layout": "Horizontal scrolling with quotes"
+    },
+    "tables": {
+      "style": "Clean data tables with icons",
+      "responsive": "Mobile-optimized table layout",
+      "visual_hierarchy": "Clear row separation"
+    }
+  },
+  "performance_indicators": {
+    "image_optimization": "Optimized images with proper formats",
+    "lazy_loading": "Progressive content loading",
+    "cdn_usage": "Content delivery optimization",
+    "mobile_performance": "Mobile-first optimization"
+  },
+  "accessibility_features": {
+    "semantic_html": "Proper HTML structure",
+    "aria_labels": "Accessibility attributes",
+    "keyboard_support": "Keyboard navigation",
+    "color_contrast": "Sufficient contrast ratios"
+  },
+  "unique_features": {
+    "financial_data": "Real-time investment metrics display",
+    "interactive_tables": "Clickable investment opportunity tables",
+    "app_integration": "QR codes for mobile app download",
+    "trust_indicators": "Regulatory compliance badges"
+  }
+}

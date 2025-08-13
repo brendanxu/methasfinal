@@ -1,0 +1,73 @@
+{
+  "site": {
+    "title": "Methas - 甲烷减排与碳信用解决方案",
+    "description": "专业的甲烷减排技术与碳信用管理解决方案提供商",
+    "name": "Methas"
+  },
+  "navigation": {
+    "home": "首页",
+    "solutions": "解决方案",
+    "cases": "成功案例",
+    "insights": "Methas Insights",
+    "about": "关于我们",
+    "contact": "联系我们"
+  },
+  "hero": {
+    "headline": "甲烷减排的未来",
+    "subheadline": "专业的碳信用管理与甲烷减排技术解决方案",
+    "cta": "了解更多",
+    "cta_contact": "立即咨询"
+  },
+  "solutions": {
+    "title": "解决方案",
+    "subtitle": "全方位的甲烷减排与碳信用管理服务",
+    "step1": {
+      "title": "监测与检测",
+      "description": "使用先进的传感器技术和数据分析，实时监测甲烷排放情况"
+    },
+    "step2": {
+      "title": "减排技术",
+      "description": "提供创新的甲烷捕获和处理技术，有效降低温室气体排放"
+    },
+    "step3": {
+      "title": "碳信用管理",
+      "description": "完整的碳信用量化、认证和交易管理服务"
+    },
+    "step4": {
+      "title": "合规报告",
+      "description": "符合国际标准的环境影响报告和合规性文档"
+    }
+  },
+  "about": {
+    "title": "关于 Methas",
+    "description": "我们致力于通过创新技术推动甲烷减排和碳信用管理的发展"
+  },
+  "contact": {
+    "title": "联系我们",
+    "description": "了解 Methas 如何帮助您实现碳减排目标",
+    "form": {
+      "name": "姓名",
+      "email": "邮箱",
+      "company": "公司",
+      "message": "留言",
+      "submit": "发送消息",
+      "required": "必填项"
+    }
+  },
+  "footer": {
+    "copyright": "© 2024 Methas. 保留所有权利。",
+    "privacy": "隐私政策",
+    "terms": "使用条款"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出现错误",
+    "retry": "重试",
+    "close": "关闭",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "readMore": "了解更多",
+    "learnMore": "了解详情"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "timestamp": "2025-08-13T17:31:43.369Z",
+  "passed": 4,
+  "total": 4,
+  "passRate": 100,
+  "thresholds": {
+    "responseTime": 2.5,
+    "maxSize": 500000
+  },
+  "results": [
+    {
+      "name": "首页",
+      "url": "http://localhost:3000/zh",
+      "time": 0.196974,
+      "size": 21522,
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "解决方案",
+      "url": "http://localhost:3000/zh/solutions",
+      "time": 0.037405,
+      "size": 26526,
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "关于我们",
+      "url": "http://localhost:3000/zh/about",
+      "time": 0.029557,
+      "size": 28537,
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "English Home",
+      "url": "http://localhost:3000/en",
+      "time": 0.027745,
+      "size": 21928,
+      "status": 200,
+      "passed": true
+    }
+  ]
+}

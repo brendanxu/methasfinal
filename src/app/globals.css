@@ -1,0 +1,233 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 
+ * Methas 设计系统 - 全局样式
+ * 基于 design-tokens.md 和 ui-spec.md
+ */
+
+@layer base {
+  /* CSS 自定义属性 - 设计 Token */
+  :root {
+    /* 高对比配色 */
+    --color-white: #ffffff;
+    --color-black: #000000;
+    
+    /* 主要圆角 */
+    --radius-xl: 1.5rem; /* 24px ⭐ */
+    
+    /* 容器宽度 */
+    --container-xl: 1200px; /* ⭐ */
+    
+    /* 网格间距 */
+    --grid-gap: 1.5rem; /* 24px ⭐ */
+    
+    /* Snappy 动效时长 */
+    --duration-fast: 200ms; /* ⭐ */
+    --duration-normal: 300ms; /* ⭐ */
+    --duration-slow: 450ms;
+    
+    /* 缓动函数 */
+    --ease-out: cubic-bezier(0, 0, 0.2, 1); /* ⭐ */
+    --ease-spring: cubic-bezier(0.68, -0.6, 0.32, 1.6); /* ⭐ */
+  }
+  
+  /* HTML 基础设置 */
+  html {
+    scroll-behavior: smooth;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  
+  /* 减少动效支持 */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+  
+  /* 焦点状态 - WCAG 2.1 AA 合规 */
+  :focus-visible {
+    outline: 3px solid theme('colors.primary.DEFAULT');
+    outline-offset: 2px;
+    border-radius: theme('borderRadius.sm');
+  }
+  
+  /* 选择文本样式 */
+  ::selection {
+    background-color: theme('colors.primary.200');
+    color: theme('colors.black');
+  }
+  
+  /* 滚动条样式 */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: theme('colors.gray.100');
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: theme('colors.gray.300');
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme('colors.gray.400');
+  }
+}
+
+@layer components {
+  /* 容器组件 */
+  .container-custom {
+    @apply mx-auto max-w-container px-6;
+  }
+  
+  .container-xl-custom {
+    @apply mx-auto max-w-container-xl px-6;
+  }
+  
+  /* 按钮组件 - 基于 ui-spec.md */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl font-semibold transition-all duration-fast ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply btn bg-black text-white border-2 border-black px-8 py-3 hover:bg-primary hover:border-primary hover:-translate-y-0.5;
+  }
+  
+  .btn-secondary {
+    @apply btn bg-white text-black border-2 border-black px-8 py-3 hover:bg-black hover:text-white hover:-translate-y-0.5;
+  }
+  
+  .btn-text {
+    @apply btn bg-transparent text-black underline hover:no-underline hover:text-primary px-0 py-1;
+  }
+  
+  /* 卡片组件 */
+  .card {
+    @apply bg-white border border-gray-200 rounded-xl p-6 shadow-card transition-all duration-normal ease-out hover:-translate-y-1 hover:shadow-card-hover;
+  }
+  
+  /* 输入框组件 */
+  .input {
+    @apply w-full px-4 py-3 border-2 border-gray-300 rounded-md text-base transition-all duration-fast ease-out focus:outline-none focus:border-black focus:ring-4 focus:ring-black/10;
+  }
+  
+  /* 标题样式 */
+  .heading-1 {
+    @apply text-4xl md:text-5xl font-bold leading-tight;
+  }
+  
+  .heading-2 {
+    @apply text-3xl md:text-4xl font-bold leading-tight;
+  }
+  
+  .heading-3 {
+    @apply text-2xl md:text-3xl font-bold leading-tight;
+  }
+  
+  /* 文本样式 */
+  .text-body {
+    @apply text-base leading-relaxed;
+  }
+  
+  .text-large {
+    @apply text-lg leading-relaxed;
+  }
+}
+
+@layer utilities {
+  /* Sticky-Step 专用样式 */
+  .sticky-step-container {
+    @apply grid grid-cols-1 lg:grid-cols-2 gap-12;
+  }
+  
+  .sticky-content {
+    @apply lg:sticky lg:top-[120px] lg:h-fit;
+  }
+  
+  .scroll-sections .section {
+    @apply min-h-[60vh] py-8;
+  }
+  
+  /* 移动端 Sticky-Step 降级 */
+  @media (max-width: 1024px) {
+    .sticky-step-container {
+      @apply grid-cols-1 gap-6;
+    }
+    
+    .sticky-content {
+      @apply static;
+    }
+  }
+  
+  /* 网格系统工具类 */
+  .grid-container {
+    @apply grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid;
+  }
+  
+  /* 动效工具类 */
+  .animate-fade-in {
+    animation: fadeIn var(--duration-normal) var(--ease-out) forwards;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp var(--duration-normal) var(--ease-out) forwards;
+  }
+  
+  .animate-bounce-in {
+    animation: bounceIn var(--duration-slow) var(--ease-spring) forwards;
+  }
+}
+
+/* 动画关键帧 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 性能优化 */
+@media (prefers-reduced-motion: no-preference) {
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-opacity {
+    will-change: opacity;
+  }
+}
