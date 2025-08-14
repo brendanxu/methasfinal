@@ -6,9 +6,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // 实验性功能
+  // 实验性功能 - 移除 framer-motion 优化以避免构建问题
   experimental: {
-    optimizePackageImports: ['framer-motion', 'clsx', 'tailwind-merge'],
+    optimizePackageImports: ['clsx', 'tailwind-merge'],
   },
   
   // 图片优化配置
