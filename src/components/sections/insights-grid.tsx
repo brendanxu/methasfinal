@@ -76,7 +76,7 @@ export function InsightsGrid() {
           {categories.map((category) => (
             <Button
               key={category}
-              variant={selectedCategory === category ? 'default' : 'secondary'}
+              variant={selectedCategory === category ? 'primary' : 'secondary'}
               size="sm"
               onClick={() => setSelectedCategory(category)}
               className="rounded-full"

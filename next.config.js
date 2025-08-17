@@ -6,9 +6,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   
-  // 实验性功能 - 移除 framer-motion 优化以避免构建问题
+  // 实验性功能 - 重新启用 framer-motion 优化
   experimental: {
-    optimizePackageImports: ['clsx', 'tailwind-merge'],
+    optimizePackageImports: ['framer-motion', 'clsx', 'tailwind-merge'],
   },
   
   // 图片优化配置
@@ -29,7 +29,15 @@ const nextConfig = {
   
   // 构建优化
   webpack: (config, { dev, isServer }) => {
-    // 移除 Framer Motion 别名配置，让 Next.js 使用默认导入
+    // 解决 framer-motion 版本冲突，确保使用项目中的版本
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        // 强制使用项目根目录的 framer-motion 版本，避免 Sanity 的版本冲突
+        'framer-motion': require.resolve('framer-motion'),
+      };
+    }
+    
     return config;
   },
   
