@@ -47,7 +47,7 @@ export function InsightsGrid() {
   };
 
   return (
-    <section className="py-32 bg-white pt-32">
+    <section className="py-32 bg-white pt-28">
       <div className="container-custom">
         {/* 页面标题 */}
         <div className="max-w-4xl mx-auto text-center mb-16">
