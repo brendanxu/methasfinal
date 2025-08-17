@@ -264,19 +264,19 @@ export function StickyStepSection() {
   const currentStep = useTransform(scrollYProgress, [0, 1], [0, steps.length - 1]);
 
   return (
-    <section className="relative bg-white py-20" ref={containerRef}>
-      {/* 页面标题 */}
-      <div className="container-custom mb-20">
-        <div className="text-center max-w-3xl mx-auto">
-          <motion.h1 
-            className="heading-1 text-black mb-6"
+    <section className="relative bg-gray-50 py-24" ref={containerRef}>
+      {/* 页面标题 - 更简洁的首页风格 */}
+      <div className="container-custom mb-16">
+        <div className="max-w-3xl">
+          <motion.h2 
+            className="heading-1 text-black mb-4"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            {t('title')}
-          </motion.h1>
+            {t('homeTitle')}
+          </motion.h2>
           <motion.p 
             className="text-large text-gray-600"
             initial={{ opacity: 0, y: 20 }}
@@ -284,7 +284,7 @@ export function StickyStepSection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            {t('subtitle')}
+            {t('homeSubtitle')}
           </motion.p>
         </div>
       </div>

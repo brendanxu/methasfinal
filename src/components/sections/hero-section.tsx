@@ -66,7 +66,7 @@ export function HeroSection() {
   const t = useTranslations('hero');
   
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-white">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 to-white pt-16">
       {/* 背景装饰 */}
       <motion.div
         className="absolute inset-0 z-0"
