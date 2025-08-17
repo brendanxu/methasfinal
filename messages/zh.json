@@ -10,7 +10,25 @@
     "cases": "成功案例",
     "insights": "Methas Insights",
     "about": "关于我们",
-    "contact": "联系我们"
+    "contact": "联系我们",
+    "dropdown": {
+      "monitoring": "监测与检测",
+      "monitoring_desc": "实时甲烷排放监测",
+      "reduction": "减排技术",
+      "reduction_desc": "甲烷捕获和处理",
+      "verification": "核查验证",
+      "verification_desc": "第三方认证服务",
+      "consulting": "咨询服务",
+      "consulting_desc": "专业减排策略",
+      "technology": "技术创新",
+      "technology_desc": "最新技术趋势",
+      "policy": "政策解读",
+      "policy_desc": "监管政策分析",
+      "market": "市场动态",
+      "market_desc": "碳市场行情",
+      "case-study": "案例研究",
+      "case-study_desc": "实际应用案例"
+    }
   },
   "hero": {
     "headline": "甲烷减排的未来",

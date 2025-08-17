@@ -139,6 +139,54 @@ const navAnimations = {
         duration: 0.2
       }
     }
+  },
+  
+  // ADDX 风格下拉菜单
+  dropdown: {
+    initial: { 
+      opacity: 0, 
+      y: -10,
+      scale: 0.95 
+    },
+    animate: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.2,
+        ease: [0.16, 1, 0.3, 1],
+        staggerChildren: 0.02
+      }
+    },
+    exit: { 
+      opacity: 0, 
+      y: -10,
+      scale: 0.95,
+      transition: {
+        duration: 0.15,
+        ease: [0.4, 0, 1, 1]
+      }
+    }
+  },
+  
+  // 下拉菜单项
+  dropdownItem: {
+    initial: { opacity: 0, x: -10 },
+    animate: { 
+      opacity: 1, 
+      x: 0,
+      transition: {
+        duration: 0.2,
+        ease: [0.16, 1, 0.3, 1]
+      }
+    },
+    exit: { 
+      opacity: 0, 
+      x: -10,
+      transition: {
+        duration: 0.1
+      }
+    }
   }
 };
 
@@ -147,6 +195,8 @@ export function Navigation() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [mobileOpenDropdown, setMobileOpenDropdown] = useState<string | null>(null);
   
   const { scrollY } = useScroll();
   
@@ -168,11 +218,32 @@ export function Navigation() {
     };
   }, [isMobileMenuOpen]);
 
+  // 下拉菜单配置 - ADDX.co 风格
   const navigationItems = [
     { key: 'home', href: '/' },
-    { key: 'solutions', href: '/solutions' },
+    { 
+      key: 'solutions', 
+      href: '/solutions',
+      hasDropdown: true,
+      dropdownItems: [
+        { key: 'monitoring', href: '/solutions/monitoring', icon: '📊' },
+        { key: 'reduction', href: '/solutions/reduction', icon: '⬇️' },
+        { key: 'verification', href: '/solutions/verification', icon: '✅' },
+        { key: 'consulting', href: '/solutions/consulting', icon: '💼' },
+      ]
+    },
+    { 
+      key: 'insights', 
+      href: '/insights',
+      hasDropdown: true,
+      dropdownItems: [
+        { key: 'technology', href: '/insights?category=technology', icon: '🔬' },
+        { key: 'policy', href: '/insights?category=policy', icon: '📋' },
+        { key: 'market', href: '/insights?category=market', icon: '📈' },
+        { key: 'case-study', href: '/insights?category=case-study', icon: '📚' },
+      ]
+    },
     { key: 'cases', href: '/cases' },
-    { key: 'insights', href: '/insights' },
     { key: 'about', href: '/about' },
   ];
   
@@ -228,16 +299,34 @@ export function Navigation() {
                 variants={navAnimations.menuItem}
                 initial="rest"
                 whileHover="hover"
+                onMouseEnter={() => item.hasDropdown && setOpenDropdown(item.key)}
+                onMouseLeave={() => item.hasDropdown && setOpenDropdown(null)}
               >
                 <Link 
                   href={item.href}
-                  className={`relative px-3 py-2 text-[15px] font-medium transition-all duration-200 ${
+                  className={`relative px-3 py-2 text-[15px] font-medium transition-all duration-200 flex items-center gap-1 ${
                     isCurrentRoute(item.href) 
                       ? 'text-black' 
                       : 'text-gray-600 hover:text-black'
                   }`}
+                  aria-expanded={item.hasDropdown ? openDropdown === item.key : undefined}
+                  aria-haspopup={item.hasDropdown ? 'menu' : undefined}
                 >
                   {t(item.key)}
+                  
+                  {/* 下拉箭头 */}
+                  {item.hasDropdown && (
+                    <motion.svg
+                      className="w-3 h-3 ml-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      animate={{ rotate: openDropdown === item.key ? 180 : 0 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </motion.svg>
+                  )}
                   
                   {/* ADDX 风格的精细下划线 */}
                   <motion.div
@@ -248,6 +337,40 @@ export function Navigation() {
                     whileHover="hover"
                   />
                 </Link>
+
+                {/* 下拉菜单 */}
+                <AnimatePresence>
+                  {item.hasDropdown && openDropdown === item.key && (
+                    <motion.div
+                      className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-2xl border border-gray-100 py-2 z-50"
+                      variants={navAnimations.dropdown}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      role="menu"
+                      aria-label={`${t(item.key)} 菜单`}
+                    >
+                      {item.dropdownItems?.map((dropdownItem) => (
+                        <motion.div
+                          key={dropdownItem.key}
+                          variants={navAnimations.dropdownItem}
+                        >
+                          <Link
+                            href={dropdownItem.href}
+                            className="flex items-center gap-3 px-4 py-3 text-[14px] text-gray-600 hover:text-black hover:bg-gray-50 transition-all duration-200"
+                            role="menuitem"
+                          >
+                            <span className="text-lg">{dropdownItem.icon}</span>
+                            <div>
+                              <div className="font-medium">{t(`dropdown.${dropdownItem.key}`)}</div>
+                              <div className="text-xs text-gray-500 mt-0.5">{t(`dropdown.${dropdownItem.key}_desc`)}</div>
+                            </div>
+                          </Link>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </motion.div>
             ))}
           </div>
@@ -331,17 +454,70 @@ export function Navigation() {
                       key={item.key}
                       variants={navAnimations.mobileMenuItem}
                     >
-                      <Link
-                        href={item.href}
-                        className={`block px-4 py-3 text-lg font-medium rounded-lg transition-all duration-200 ${
-                          isCurrentRoute(item.href) 
-                            ? 'text-black bg-gray-50' 
-                            : 'text-gray-600 hover:text-black hover:bg-gray-50'
-                        }`}
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {t(item.key)}
-                      </Link>
+                      {/* 主菜单项 */}
+                      <div className="relative">
+                        <div className="flex items-center justify-between">
+                          <Link
+                            href={item.href}
+                            className={`flex-1 px-4 py-3 text-lg font-medium rounded-lg transition-all duration-200 ${
+                              isCurrentRoute(item.href) 
+                                ? 'text-black bg-gray-50' 
+                                : 'text-gray-600 hover:text-black hover:bg-gray-50'
+                            }`}
+                            onClick={() => !item.hasDropdown && setIsMobileMenuOpen(false)}
+                          >
+                            {t(item.key)}
+                          </Link>
+                          
+                          {/* 移动端下拉箭头 */}
+                          {item.hasDropdown && (
+                            <motion.button
+                              className="px-3 py-3 text-gray-600 hover:text-black"
+                              onClick={() => setMobileOpenDropdown(
+                                mobileOpenDropdown === item.key ? null : item.key
+                              )}
+                              animate={{ rotate: mobileOpenDropdown === item.key ? 180 : 0 }}
+                              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                              aria-expanded={mobileOpenDropdown === item.key}
+                              aria-label={`展开 ${t(item.key)} 菜单`}
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                              </svg>
+                            </motion.button>
+                          )}
+                        </div>
+                        
+                        {/* 移动端下拉菜单 */}
+                        <AnimatePresence>
+                          {item.hasDropdown && mobileOpenDropdown === item.key && (
+                            <motion.div
+                              className="mt-2 ml-4 space-y-1"
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                            >
+                              {item.dropdownItems?.map((dropdownItem) => (
+                                <Link
+                                  key={dropdownItem.key}
+                                  href={dropdownItem.href}
+                                  className="flex items-center gap-3 px-4 py-2 text-base text-gray-600 hover:text-black hover:bg-gray-50 rounded-md transition-all duration-200"
+                                  onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                    setMobileOpenDropdown(null);
+                                  }}
+                                >
+                                  <span className="text-sm">{dropdownItem.icon}</span>
+                                  <div>
+                                    <div className="font-medium">{t(`dropdown.${dropdownItem.key}`)}</div>
+                                  </div>
+                                </Link>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     </motion.div>
                   ))}
                 </div>
