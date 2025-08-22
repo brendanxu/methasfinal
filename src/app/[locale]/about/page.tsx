@@ -1,5 +1,5 @@
 import { getTranslations } from 'next-intl/server';
-import { Navigation } from '@/components/layout/navigation';
+import { Navigation } from '@/components/ui/navigation';
 import { SouthpoleAboutSection } from '@/components/sections/southpole-about-section';
 import { generateSEOMetadata, seoTemplates } from '@/components/seo/seo-head';
 
