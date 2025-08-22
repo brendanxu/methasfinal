@@ -134,7 +134,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 // 预设的 Southpole 风格按钮组合
-export const SouthpoleButton = {
+const SouthpoleButton = {
   // CTA 主按钮
   CTA: React.forwardRef<HTMLButtonElement, Omit<ButtonProps, 'variant' | 'size'>>(
     (props, ref) => <Button ref={ref} variant="primary" size="lg" {...props} />
