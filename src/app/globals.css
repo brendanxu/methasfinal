@@ -107,8 +107,9 @@
 }
 
 @layer components {
-  /* Southpole 容器系统 */
-  .southpole-container {
+  /* Southpole 统一容器系统 */
+  .southpole-container,
+  .container-custom {
     @apply mx-auto px-10 lg:px-20;
     max-width: var(--container-max);
   }

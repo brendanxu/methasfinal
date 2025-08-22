@@ -113,7 +113,7 @@ export function Navigation() {
             : "bg-transparent"
         )}
       >
-        <nav className="px-10 lg:px-20 mx-auto max-w-[1440px]">
+        <nav className="container-custom">
           <div className="flex h-20 lg:h-24 items-center justify-between">
             {/* Logo - Southpole 风格的极简文字 */}
             <Link 
