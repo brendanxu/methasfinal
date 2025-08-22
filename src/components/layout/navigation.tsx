@@ -1,14 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useTranslations, useLocale } from 'next-intl';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
-// 语言切换组件
+// Southpole 风格的语言切换组件
 function LanguageSwitcher() {
   const locale = useLocale();
   const otherLocale = locale === 'zh' ? 'en' : 'zh';
@@ -16,42 +15,14 @@ function LanguageSwitcher() {
   return (
     <Link 
       href={`/${otherLocale}`}
-      className="text-sm font-medium text-gray-600 hover:text-black transition-colors duration-fast"
+      className="text-xs font-normal tracking-widest text-black/60 hover:text-black transition-colors duration-300 uppercase"
     >
-      {otherLocale === 'en' ? 'EN' : '中文'}
+      {otherLocale === 'en' ? 'EN' : 'ZH'}
     </Link>
   );
 }
 
-// 移动端菜单项组件
-function MobileNavItem({ 
-  href, 
-  children, 
-  onClick 
-}: { 
-  href: string; 
-  children: React.ReactNode; 
-  onClick: () => void; 
-}) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -20 }}
-      transition={{ duration: 0.2 }}
-    >
-      <Link
-        href={href}
-        onClick={onClick}
-        className="block py-4 text-lg font-medium text-black hover:text-primary transition-colors border-b border-gray-100 last:border-b-0"
-      >
-        {children}
-      </Link>
-    </motion.div>
-  );
-}
-
-// 汉堡菜单图标
+// Southpole 风格的汉堡菜单图标 - 更细的线条
 function HamburgerIcon({ 
   isOpen, 
   onClick 
@@ -62,45 +33,59 @@ function HamburgerIcon({
   return (
     <button
       onClick={onClick}
-      className="flex flex-col justify-center items-center w-6 h-6 focus:outline-none"
+      className="relative w-11 h-11 flex items-center justify-center focus:outline-none group southpole-touch-target"
       aria-label="Toggle navigation menu"
     >
-      <motion.span
-        className="block w-6 h-0.5 bg-black mb-1.5"
-        animate={{
-          rotate: isOpen ? 45 : 0,
-          y: isOpen ? 8 : 0,
-        }}
-        transition={{ duration: 0.2 }}
-      />
-      <motion.span
-        className="block w-6 h-0.5 bg-black mb-1.5"
-        animate={{
-          opacity: isOpen ? 0 : 1,
-        }}
-        transition={{ duration: 0.2 }}
-      />
-      <motion.span
-        className="block w-6 h-0.5 bg-black"
-        animate={{
-          rotate: isOpen ? -45 : 0,
-          y: isOpen ? -8 : 0,
-        }}
-        transition={{ duration: 0.2 }}
-      />
+      <div className="relative w-5 h-4 flex flex-col justify-between">
+        <motion.span
+          className="block w-full h-px bg-black origin-left"
+          animate={{
+            rotate: isOpen ? 45 : 0,
+            y: isOpen ? -0.5 : 0,
+            scaleX: isOpen ? 1.15 : 1,
+          }}
+          transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+        />
+        <motion.span
+          className="block w-full h-px bg-black"
+          animate={{
+            opacity: isOpen ? 0 : 1,
+            scaleX: isOpen ? 0 : 1,
+          }}
+          transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
+        />
+        <motion.span
+          className="block w-full h-px bg-black origin-left"
+          animate={{
+            rotate: isOpen ? -45 : 0,
+            y: isOpen ? 0.5 : 0,
+            scaleX: isOpen ? 1.15 : 1,
+          }}
+          transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+        />
+      </div>
     </button>
   );
 }
 
-// 主导航组件
+// Southpole 风格的主导航组件
 export function Navigation() {
   const t = useTranslations('navigation');
   const locale = useLocale();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // 监听滚动，添加微妙的背景变化
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // 导航链接配置
   const navItems = [
-    { href: `/${locale}`, label: t('home') },
     { href: `/${locale}/solutions`, label: t('solutions') },
     { href: `/${locale}/cases`, label: t('cases') },
     { href: `/${locale}/insights`, label: t('insights') },
@@ -116,121 +101,152 @@ export function Navigation() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
-      <nav className="container-custom mx-auto">
-        <div className="flex h-20 items-center justify-between">
-          {/* Logo */}
-          <div className="flex items-center">
+    <>
+      <header 
+        className={cn(
+          "fixed top-0 z-50 w-full transition-all duration-500",
+          isScrolled 
+            ? "bg-white/95 backdrop-blur-sm border-b border-black/5" 
+            : "bg-transparent"
+        )}
+      >
+        <nav className="px-10 lg:px-20 mx-auto max-w-[1440px]">
+          <div className="flex h-20 lg:h-24 items-center justify-between">
+            {/* Logo - Southpole 风格的极简文字 */}
             <Link 
               href={`/${locale}`} 
-              className="text-2xl font-bold text-black hover:text-primary transition-colors duration-fast"
+              className="text-xl lg:text-2xl font-light tracking-wide text-black hover:opacity-70 transition-opacity duration-300"
             >
-              Methas
+              METHAS
             </Link>
-          </div>
 
-          {/* 桌面端导航 */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-sm font-medium text-gray-700 hover:text-black transition-colors duration-fast relative group"
-              >
-                {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-fast group-hover:w-full" />
-              </Link>
-            ))}
-          </div>
-
-          {/* 桌面端操作区 */}
-          <div className="hidden lg:flex items-center space-x-4">
-            <LanguageSwitcher />
-            <Button asChild size="default">
-              <Link href={`/${locale}/contact`}>
-                {t('contact')}
-              </Link>
-            </Button>
-          </div>
-
-          {/* 移动端汉堡菜单 */}
-          <div className="lg:hidden">
-            <HamburgerIcon 
-              isOpen={isMobileMenuOpen} 
-              onClick={toggleMobileMenu} 
-            />
-          </div>
-        </div>
-
-        {/* 移动端菜单 */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="lg:hidden border-t border-gray-200 bg-white"
-            >
-              <div className="py-4 space-y-2">
-                {navItems.map((item, index) => (
-                  <motion.div
-                    key={item.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ 
-                      delay: index * 0.1,
-                      duration: 0.2 
-                    }}
-                  >
-                    <MobileNavItem 
-                      href={item.href} 
-                      onClick={closeMobileMenu}
-                    >
-                      {item.label}
-                    </MobileNavItem>
-                  </motion.div>
-                ))}
-                
-                {/* 移动端操作区 */}
-                <motion.div 
-                  className="pt-4 border-t border-gray-100 flex flex-col space-y-3"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ 
-                    delay: navItems.length * 0.1,
-                    duration: 0.2 
-                  }}
+            {/* 桌面端导航 - 水平排列，更大间距 */}
+            <div className="hidden lg:flex items-center gap-12">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm font-light tracking-wide text-black/80 hover:text-black transition-colors duration-300 relative group"
                 >
-                  <div className="flex justify-between items-center">
-                    <LanguageSwitcher />
-                    <Button asChild size="sm">
-                      <Link href={`/${locale}/contact`} onClick={closeMobileMenu}>
-                        {t('contact')}
-                      </Link>
-                    </Button>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+                  {item.label}
+                  {/* 极细的下划线效果 */}
+                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-black transition-all duration-300 group-hover:w-full" />
+                </Link>
+              ))}
+            </div>
 
-      {/* 移动端菜单背景遮罩 */}
+            {/* 桌面端操作区 - 极简按钮风格 */}
+            <div className="hidden lg:flex items-center gap-8">
+              <LanguageSwitcher />
+              <Link 
+                href={`/${locale}/contact`}
+                className="px-8 py-3 border border-black text-sm font-light tracking-wide text-black hover:bg-black hover:text-white transition-all duration-300"
+              >
+                {t('contact').toUpperCase()}
+              </Link>
+            </div>
+
+            {/* 移动端汉堡菜单 */}
+            <div className="lg:hidden">
+              <HamburgerIcon 
+                isOpen={isMobileMenuOpen} 
+                onClick={toggleMobileMenu} 
+              />
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      {/* 移动端全屏菜单 - Southpole 风格 */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="lg:hidden fixed inset-0 top-20 bg-black/20 backdrop-blur-sm z-40"
-            onClick={closeMobileMenu}
-          />
+            transition={{ duration: 0.3, ease: [0, 0, 0.2, 1] }}
+            className="fixed inset-0 z-40 bg-white lg:hidden"
+          >
+            {/* 移动端导航头部 */}
+            <div className="px-8 h-20 flex items-center justify-between border-b border-black/10">
+              <Link 
+                href={`/${locale}`} 
+                onClick={closeMobileMenu}
+                className="text-xl font-light tracking-wide text-black"
+              >
+                METHAS
+              </Link>
+              <HamburgerIcon 
+                isOpen={isMobileMenuOpen} 
+                onClick={toggleMobileMenu} 
+              />
+            </div>
+
+            {/* 移动端菜单项 - 大字号，充足间距 */}
+            <nav className="px-8 py-12">
+              <div className="space-y-8">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.href}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      delay: index * 0.05,
+                      duration: 0.3,
+                      ease: [0, 0, 0.2, 1]
+                    }}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={closeMobileMenu}
+                      className="block text-2xl font-light text-black hover:opacity-70 transition-opacity duration-300"
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                
+                {/* 移动端联系按钮 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    delay: navItems.length * 0.05,
+                    duration: 0.3,
+                    ease: [0, 0, 0.2, 1]
+                  }}
+                  className="pt-8 border-t border-black/10"
+                >
+                  <Link 
+                    href={`/${locale}/contact`}
+                    onClick={closeMobileMenu}
+                    className="inline-block px-8 py-3 border border-black text-base font-light tracking-wide text-black"
+                  >
+                    {t('contact').toUpperCase()}
+                  </Link>
+                </motion.div>
+
+                {/* 移动端语言切换 */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ 
+                    delay: (navItems.length + 1) * 0.05,
+                    duration: 0.3,
+                    ease: [0, 0, 0.2, 1]
+                  }}
+                >
+                  <LanguageSwitcher />
+                </motion.div>
+              </div>
+            </nav>
+          </motion.div>
         )}
       </AnimatePresence>
-    </header>
+
+      {/* 占位元素，防止内容被固定导航遮挡 */}
+      <div className="h-20 lg:h-24" />
+    </>
   );
 }
 

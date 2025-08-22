@@ -3,40 +3,62 @@
 @tailwind utilities;
 
 /* 
- * Methas 设计系统 - 全局样式
- * 基于 design-tokens.md 和 ui-spec.md
+ * Methas - Southpole 风格设计系统
+ * 极简主义 + 高对比 + 大字号系统
  */
 
 @layer base {
-  /* CSS 自定义属性 - 设计 Token */
+  /* Southpole 风格 CSS 自定义属性 */
   :root {
-    /* 高对比配色 */
+    /* 核心配色 - 纯黑白对比 */
     --color-white: #ffffff;
     --color-black: #000000;
+    --color-gray-light: #f5f5f5;
+    --color-gray-mid: #e0e0e0;
+    --color-gray-dark: #666666;
+    --color-accent: #00c853; /* 品牌绿，极少使用 */
     
-    /* 主要圆角 */
-    --radius-xl: 1.5rem; /* 24px ⭐ */
+    /* 容器系统 - Southpole 更宽的设计 */
+    --container-max: 1440px; /* 更宽的最大宽度 */
+    --container-padding: 2.5rem; /* 40px */
+    --section-spacing: 7.5rem; /* 120px - 更大的区块间距 */
+    --grid-gap: 2.5rem; /* 40px - 网格间距 */
     
-    /* 容器宽度 */
-    --container-xl: 1200px; /* ⭐ */
+    /* 字体系统 - Southpole 大字号对比 */
+    --text-xs: 0.75rem;    /* 12px */
+    --text-sm: 0.875rem;   /* 14px */
+    --text-base: 1rem;     /* 16px */
+    --text-lg: 1.125rem;   /* 18px */
+    --text-xl: 1.5rem;     /* 24px */
+    --text-2xl: 2rem;      /* 32px */
+    --text-3xl: 3rem;      /* 48px - 大标题 */
+    --text-4xl: 4rem;      /* 64px - Hero 标题 */
+    --text-5xl: 5rem;      /* 80px - 超大标题 */
     
-    /* 网格间距 */
-    --grid-gap: 1.5rem; /* 24px ⭐ */
+    /* 极简动效时长 - 更克制的动画 */
+    --duration-fast: 200ms;
+    --duration-normal: 300ms;
+    --duration-slow: 500ms;
     
-    /* Snappy 动效时长 */
-    --duration-fast: 200ms; /* ⭐ */
-    --duration-normal: 300ms; /* ⭐ */
-    --duration-slow: 450ms;
-    
-    /* 缓动函数 */
-    --ease-out: cubic-bezier(0, 0, 0.2, 1); /* ⭐ */
-    --ease-spring: cubic-bezier(0.68, -0.6, 0.32, 1.6); /* ⭐ */
+    /* Southpole 缓动函数 */
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* HTML 基础设置 */
+  /* HTML 基础设置 - Southpole 字体栈 */
   html {
     scroll-behavior: smooth;
     font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+  
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--color-black);
+    background-color: var(--color-white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   
   /* 减少动效支持 */
@@ -53,144 +75,301 @@
     }
   }
   
-  /* 焦点状态 - WCAG 2.1 AA 合规 */
+  /* Southpole 焦点状态 - 极简边框 */
   :focus-visible {
-    outline: 3px solid theme('colors.primary.DEFAULT');
+    outline: 2px solid var(--color-black);
     outline-offset: 2px;
-    border-radius: theme('borderRadius.sm');
   }
   
-  /* 选择文本样式 */
+  /* 选择文本样式 - 极简 */
   ::selection {
-    background-color: theme('colors.primary.200');
-    color: theme('colors.black');
+    background-color: var(--color-black);
+    color: var(--color-white);
   }
   
-  /* 滚动条样式 */
+  /* Southpole 滚动条 - 极细样式 */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 4px;
   }
   
   ::-webkit-scrollbar-track {
-    background: theme('colors.gray.100');
+    background: var(--color-gray-light);
   }
   
   ::-webkit-scrollbar-thumb {
-    background: theme('colors.gray.300');
-    border-radius: 4px;
+    background: var(--color-gray-mid);
+    border-radius: 0;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: theme('colors.gray.400');
+    background: var(--color-black);
   }
 }
 
 @layer components {
-  /* 容器组件 */
-  .container-custom {
-    @apply mx-auto max-w-container px-6;
+  /* Southpole 容器系统 */
+  .southpole-container {
+    @apply mx-auto px-10 lg:px-20;
+    max-width: var(--container-max);
   }
   
-  .container-xl-custom {
-    @apply mx-auto max-w-container-xl px-6;
+  .southpole-section {
+    padding-top: var(--section-spacing);
+    padding-bottom: var(--section-spacing);
   }
   
-  /* 按钮组件 - 基于 ui-spec.md */
-  .btn {
-    @apply inline-flex items-center justify-center rounded-xl font-semibold transition-all duration-fast ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  /* Southpole 字体样式 */
+  .southpole-heading-hero {
+    @apply font-light tracking-tight leading-none;
+    font-size: var(--text-4xl);
+    line-height: 0.9;
   }
   
-  .btn-primary {
-    @apply btn bg-black text-white border-2 border-black px-8 py-3 hover:bg-primary hover:border-primary hover:-translate-y-0.5;
+  .southpole-heading-1 {
+    @apply font-light tracking-tight;
+    font-size: var(--text-3xl);
+    line-height: 1.1;
   }
   
-  .btn-secondary {
-    @apply btn bg-white text-black border-2 border-black px-8 py-3 hover:bg-black hover:text-white hover:-translate-y-0.5;
+  .southpole-heading-2 {
+    @apply font-light tracking-wide;
+    font-size: var(--text-2xl);
+    line-height: 1.2;
   }
   
-  .btn-text {
-    @apply btn bg-transparent text-black underline hover:no-underline hover:text-primary px-0 py-1;
+  .southpole-heading-3 {
+    @apply font-light tracking-wide;
+    font-size: var(--text-xl);
+    line-height: 1.3;
   }
   
-  /* 卡片组件 */
-  .card {
-    @apply bg-white border border-gray-200 rounded-xl p-6 shadow-card transition-all duration-normal ease-out hover:-translate-y-1 hover:shadow-card-hover;
+  .southpole-body-large {
+    @apply font-light;
+    font-size: var(--text-lg);
+    line-height: 1.8;
+    color: var(--color-gray-dark);
   }
   
-  /* 输入框组件 */
-  .input {
-    @apply w-full px-4 py-3 border-2 border-gray-300 rounded-md text-base transition-all duration-fast ease-out focus:outline-none focus:border-black focus:ring-4 focus:ring-black/10;
+  .southpole-body {
+    @apply font-light;
+    font-size: var(--text-base);
+    line-height: 1.8;
+    color: var(--color-gray-dark);
   }
   
-  /* 标题样式 */
-  .heading-1 {
-    @apply text-4xl md:text-5xl font-bold leading-tight;
+  .southpole-caption {
+    @apply font-normal tracking-widest uppercase;
+    font-size: var(--text-xs);
+    color: var(--color-gray-dark);
+    letter-spacing: 0.1em;
   }
   
-  .heading-2 {
-    @apply text-3xl md:text-4xl font-bold leading-tight;
+  /* Southpole 卡片 - 无边框或极细边框 */
+  .southpole-card {
+    @apply bg-white transition-all duration-300;
+    padding: var(--grid-gap);
   }
   
-  .heading-3 {
-    @apply text-2xl md:text-3xl font-bold leading-tight;
+  .southpole-card-outlined {
+    @apply bg-white border border-gray-200 transition-all duration-300;
+    padding: var(--grid-gap);
   }
   
-  /* 文本样式 */
-  .text-body {
-    @apply text-base leading-relaxed;
+  .southpole-card:hover,
+  .southpole-card-outlined:hover {
+    @apply shadow-sm;
   }
   
-  .text-large {
-    @apply text-lg leading-relaxed;
+  /* Southpole 网格系统 */
+  .southpole-grid {
+    @apply grid;
+    gap: var(--grid-gap);
+  }
+  
+  .southpole-grid-2 {
+    @apply grid-cols-1 md:grid-cols-2;
+  }
+  
+  .southpole-grid-3 {
+    @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .southpole-grid-4 {
+    @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-4;
+  }
+  
+  /* Southpole 分割线 - 极细 */
+  .southpole-divider {
+    @apply w-full h-px bg-gray-200;
+  }
+  
+  .southpole-divider-vertical {
+    @apply w-px h-full bg-gray-200;
+  }
+  
+  /* Southpole 输入框 - 极简风格 */
+  .southpole-input {
+    @apply w-full px-0 py-3 border-0 border-b border-gray-300 bg-transparent font-light text-base placeholder-gray-400 transition-colors duration-300;
+    @apply focus:outline-none focus:border-black focus:ring-0;
   }
 }
 
 @layer utilities {
-  /* Sticky-Step 专用样式 */
-  .sticky-step-container {
-    @apply grid grid-cols-1 lg:grid-cols-2 gap-12;
+  /* Southpole Sticky-Step 样式 - 保持交互，更新视觉 */
+  .southpole-sticky-section {
+    @apply grid grid-cols-1 lg:grid-cols-2;
+    gap: var(--grid-gap);
+    min-height: 100vh;
   }
   
-  .sticky-content {
-    @apply lg:sticky lg:top-[120px] lg:h-fit;
+  .southpole-sticky-media {
+    @apply lg:sticky lg:top-1/2 lg:transform lg:-translate-y-1/2 lg:h-3/5;
+    @apply flex items-center justify-center;
   }
   
-  .scroll-sections .section {
-    @apply min-h-[60vh] py-8;
+  .southpole-scroll-content {
+    @apply space-y-32 py-32;
+  }
+  
+  .southpole-scroll-step {
+    @apply min-h-screen flex flex-col justify-center;
+    padding: var(--section-spacing) 0;
   }
   
   /* 移动端 Sticky-Step 降级 */
   @media (max-width: 1024px) {
-    .sticky-step-container {
-      @apply grid-cols-1 gap-6;
+    .southpole-sticky-section {
+      @apply grid-cols-1 gap-16;
     }
     
-    .sticky-content {
-      @apply static;
+    .southpole-sticky-media {
+      @apply static transform-none h-auto;
+    }
+    
+    .southpole-scroll-content {
+      @apply space-y-16 py-16;
+    }
+    
+    .southpole-scroll-step {
+      @apply min-h-0 py-16;
     }
   }
   
-  /* 网格系统工具类 */
-  .grid-container {
-    @apply grid grid-cols-4 md:grid-cols-8 lg:grid-cols-12 gap-grid;
+  /* Southpole 间距系统 */
+  .sp-mt-xs { margin-top: 0.5rem; }     /* 8px */
+  .sp-mt-sm { margin-top: 1rem; }       /* 16px */
+  .sp-mt-md { margin-top: 1.5rem; }     /* 24px */
+  .sp-mt-lg { margin-top: 2rem; }       /* 32px */
+  .sp-mt-xl { margin-top: 3rem; }       /* 48px */
+  .sp-mt-2xl { margin-top: 5rem; }      /* 80px */
+  .sp-mt-3xl { margin-top: 7.5rem; }    /* 120px */
+  
+  .sp-mb-xs { margin-bottom: 0.5rem; }  /* 8px */
+  .sp-mb-sm { margin-bottom: 1rem; }    /* 16px */
+  .sp-mb-md { margin-bottom: 1.5rem; }  /* 24px */
+  .sp-mb-lg { margin-bottom: 2rem; }    /* 32px */
+  .sp-mb-xl { margin-bottom: 3rem; }    /* 48px */
+  .sp-mb-2xl { margin-bottom: 5rem; }   /* 80px */
+  .sp-mb-3xl { margin-bottom: 7.5rem; } /* 120px */
+  
+  /* Southpole 动画 - 更微妙 */
+  .southpole-fade-in {
+    animation: southpoleFadeIn var(--duration-slow) var(--ease-out) forwards;
   }
   
-  /* 动效工具类 */
-  .animate-fade-in {
-    animation: fadeIn var(--duration-normal) var(--ease-out) forwards;
+  .southpole-slide-up {
+    animation: southpoleSlideUp var(--duration-slow) var(--ease-out) forwards;
   }
   
-  .animate-slide-up {
-    animation: slideUp var(--duration-normal) var(--ease-out) forwards;
+  /* Southpole 悬停效果 */
+  .southpole-hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
   }
   
-  .animate-bounce-in {
-    animation: bounceIn var(--duration-slow) var(--ease-spring) forwards;
+  .southpole-hover-fade {
+    @apply transition-opacity duration-300 hover:opacity-70;
+  }
+  
+  /* 响应式字体和间距优化 */
+  @media (max-width: 768px) {
+    .southpole-heading-hero {
+      font-size: var(--text-3xl);
+    }
+    
+    .southpole-heading-1 {
+      font-size: var(--text-2xl);
+    }
+    
+    .southpole-heading-2 {
+      font-size: var(--text-xl);
+    }
+    
+    .southpole-section {
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+    }
+    
+    .southpole-container {
+      @apply px-6; /* 减少移动端左右内边距 */
+    }
+  }
+  
+  /* 更小屏幕优化 (超小手机) */
+  @media (max-width: 375px) {
+    .southpole-heading-hero {
+      font-size: var(--text-2xl); /* 进一步缩小 */
+      line-height: 1.1;
+    }
+    
+    .southpole-heading-1 {
+      font-size: var(--text-xl);
+    }
+    
+    .southpole-section {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+    
+    .southpole-container {
+      @apply px-4; /* 更小的内边距 */
+    }
+    
+    /* 网格系统移动端优化 */
+    .southpole-grid-3,
+    .southpole-grid-4 {
+      @apply grid-cols-1; /* 强制单列布局 */
+    }
+  }
+  
+  /* 触摸设备优化 */
+  @media (pointer: coarse) {
+    /* 增加触摸目标尺寸 */
+    .southpole-touch-target {
+      min-height: 44px; /* iOS 推荐最小触摸尺寸 */
+      min-width: 44px;
+    }
+    
+    /* 按钮间距优化 */
+    .southpole-button-group > * {
+      margin: 0.5rem;
+    }
+  }
+  
+  /* 横屏手机优化 */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .southpole-section {
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+    
+    .southpole-scroll-step {
+      @apply min-h-0 py-8;
+    }
   }
 }
 
-/* 动画关键帧 */
-@keyframes fadeIn {
+/* Southpole 动画关键帧 - 极简动效 */
+@keyframes southpoleFadeIn {
   from {
     opacity: 0;
   }
@@ -199,10 +378,10 @@
   }
 }
 
-@keyframes slideUp {
+@keyframes southpoleSlideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
@@ -210,24 +389,26 @@
   }
 }
 
-@keyframes bounceIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
+/* Southpole 性能优化 */
+@media (prefers-reduced-motion: no-preference) {
+  .southpole-will-change {
+    will-change: transform, opacity;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
+  
+  .southpole-gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
   }
 }
 
-/* 性能优化 */
-@media (prefers-reduced-motion: no-preference) {
-  .will-change-transform {
-    will-change: transform;
+/* Southpole 打印样式 */
+@media print {
+  .southpole-section {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
   }
   
-  .will-change-opacity {
-    will-change: opacity;
+  .southpole-heading-hero {
+    font-size: 2rem;
   }
 }

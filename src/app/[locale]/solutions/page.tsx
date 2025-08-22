@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
-import { StickyStepSection } from '@/components/sections/sticky-step-section';
-import { Navigation } from '@/components/ui/navigation';
+import { Navigation } from '@/components/layout/navigation';
+import { SouthpoleSolutionsSection } from '@/components/sections/southpole-solutions-section';
 import { generateSEOMetadata, seoTemplates } from '@/components/seo/seo-head';
 
 export async function generateMetadata({
@@ -19,7 +19,7 @@ export default async function SolutionsPage({
   return (
     <main className="min-h-screen bg-white">
       <Navigation />
-      <StickyStepSection />
+      <SouthpoleSolutionsSection />
     </main>
   );
 }

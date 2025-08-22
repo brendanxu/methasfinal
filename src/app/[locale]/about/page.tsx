@@ -1,8 +1,6 @@
 import { getTranslations } from 'next-intl/server';
-import { Navigation } from '@/components/ui/navigation';
-import { AboutHeroSection } from '@/components/sections/about-hero-section';
-import { TeamSection } from '@/components/sections/team-section';
-import { ValuesSection } from '@/components/sections/values-section';
+import { Navigation } from '@/components/layout/navigation';
+import { SouthpoleAboutSection } from '@/components/sections/southpole-about-section';
 import { generateSEOMetadata, seoTemplates } from '@/components/seo/seo-head';
 
 export async function generateMetadata({
@@ -21,9 +19,7 @@ export default async function AboutPage({
   return (
     <main className="min-h-screen bg-white">
       <Navigation />
-      <AboutHeroSection />
-      <ValuesSection />
-      <TeamSection />
+      <SouthpoleAboutSection />
     </main>
   );
 }
