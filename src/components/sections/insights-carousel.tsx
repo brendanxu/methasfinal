@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import type { InsightsCarouselProps } from '@/types/sanity';
 
 // 模拟文章数据
 const mockInsights = [
@@ -54,7 +55,7 @@ const mockInsights = [
   },
 ];
 
-export function InsightsCarousel() {
+export function InsightsCarousel({ articles = [] }: InsightsCarouselProps) {
   const t = useTranslations('insights');
   const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);

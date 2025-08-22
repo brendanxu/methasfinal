@@ -2,6 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
+import type { StatsSectionProps } from '@/types/sanity';
 
 // 数字滚动组件 - 基于 motion-language.md 配方3
 function CountUpNumber({ 
@@ -119,7 +120,7 @@ function StatItem({
   );
 }
 
-export function StatsSection() {
+export function StatsSection({ statistics = [] }: StatsSectionProps) {
   // 统计数据
   const stats = [
     {

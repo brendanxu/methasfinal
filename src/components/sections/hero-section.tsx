@@ -5,8 +5,9 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { SouthpoleButton } from '@/components/ui/button';
 import { motionVariants, viewportConfig } from '@/lib/motion-config';
+import type { HeroSectionProps } from '@/types/sanity';
 
-export function HeroSection() {
+export function HeroSection({ heroSlides = [] }: HeroSectionProps) {
   const t = useTranslations('hero');
   
   return (

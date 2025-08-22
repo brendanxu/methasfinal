@@ -7,6 +7,8 @@ import { ContactSection } from '@/components/sections/contact-section';
 import { Navigation } from '@/components/ui/navigation';
 import { Footer } from '@/components/layout/footer';
 import { generateSEOMetadata, seoTemplates } from '@/components/seo/seo-head';
+import { sanityApi } from '../../../sanity/sanity.client';
+import type { HeroSlide, ServiceSection, Statistic, Article } from '@/types/sanity';
 
 export async function generateMetadata({
   params: { locale },
@@ -21,14 +23,22 @@ export default async function HomePage({
 }: {
   params: { locale: string };
 }) {
+  // 获取动态内容数据
+  const [heroSlides, serviceSections, statistics, featuredArticles] = await Promise.all([
+    sanityApi.getHeroSlides().catch(() => []) as Promise<HeroSlide[]>,
+    sanityApi.getServiceSections().catch(() => []) as Promise<ServiceSection[]>,
+    sanityApi.getStatistics().catch(() => []) as Promise<Statistic[]>,
+    sanityApi.getFeaturedArticles().catch(() => []) as Promise<Article[]>,
+  ]);
+
   return (
     <>
       <Navigation />
       <main className="min-h-screen bg-white">
-        <HeroSection />
-        <StickyStepSection />
-        <InsightsCarousel />
-        <StatsSection />
+        <HeroSection heroSlides={heroSlides} />
+        <StickyStepSection serviceSections={serviceSections} />
+        <InsightsCarousel articles={featuredArticles} />
+        <StatsSection statistics={statistics} />
         <ContactSection />
         <Footer />
       </main>

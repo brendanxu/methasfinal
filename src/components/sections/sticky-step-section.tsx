@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import type { StickyStepSectionProps } from '@/types/sanity';
 
 // Sticky-Step 交互配置 - 基于 test-release-checklist.md 规范
 const stickyStepConfig = {
@@ -250,7 +251,7 @@ function StepVisual({ visual, isActive }: { visual: string; isActive: boolean })
   );
 }
 
-export function StickyStepSection() {
+export function StickyStepSection({ serviceSections = [] }: StickyStepSectionProps) {
   const t = useTranslations('solutions');
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeStep, setActiveStep] = useState(0);
