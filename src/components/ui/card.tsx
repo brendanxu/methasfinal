@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
 
 // Southpole 风格卡片变体配置
 const cardVariants = cva(
@@ -215,11 +216,12 @@ const CaseStudyCard = React.forwardRef<HTMLDivElement, CaseStudyCardProps>(
     >
       {/* 图片区域 - 黑白处理 */}
       {image && (
-        <div className="aspect-[4/3] overflow-hidden">
-          <img 
+        <div className="aspect-[4/3] overflow-hidden relative">
+          <Image 
             src={image} 
             alt={title}
-            className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+            fill
+            className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
           />
         </div>
       )}
