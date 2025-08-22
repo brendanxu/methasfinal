@@ -92,8 +92,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     disabled,
     ...props 
   }, ref) => {
-    const Comp = asChild ? Slot : 'button';
-    
     // Southpole 风格的加载动画
     const LoadingSpinner = () => (
       <div className="mr-2 h-4 w-4 animate-spin">
@@ -101,8 +99,21 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       </div>
     );
     
+    // 当使用 asChild 时，简化渲染以避免 React.Children.only 错误
+    if (asChild) {
+      return (
+        <Slot
+          className={cn(buttonVariants({ variant, size, rounded, className }))}
+          ref={ref}
+          {...props}
+        >
+          {children}
+        </Slot>
+      );
+    }
+
     return (
-      <Comp
+      <button
         className={cn(buttonVariants({ variant, size, rounded, className }))}
         ref={ref}
         disabled={disabled || loading}
@@ -126,7 +137,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {(variant === 'primary' || variant === 'outline') && (
           <span className="absolute inset-0 bg-black transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10" />
         )}
-      </Comp>
+      </button>
     );
   }
 );
