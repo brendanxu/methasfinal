@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
-import { ProductCard } from '@/components/ui/card';
+import { ServiceCard } from '@/components/ui/card';
 
 // 产品图标组件
 function MonitorIcon() {
@@ -155,15 +155,11 @@ export function ProductsSection() {
               viewport={cardAnimations.card.viewport}
               transition={cardAnimations.card.transition(index)}
             >
-              <ProductCard
-                icon={product.icon}
+              <ServiceCard
                 title={product.title}
                 description={product.description}
                 features={product.features}
-                cta={{
-                  text: '了解更多',
-                  href: `/solutions#step-${index + 1}`
-                }}
+                href={`/solutions#step-${index + 1}`}
                 className="h-full"
               />
             </motion.div>
