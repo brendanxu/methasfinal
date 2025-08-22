@@ -110,7 +110,7 @@
   /* Southpole 统一容器系统 */
   .southpole-container,
   .container-custom {
-    @apply mx-auto px-10 lg:px-20;
+    @apply mx-auto px-5 lg:px-10;
     max-width: var(--container-max);
   }
   
@@ -310,8 +310,9 @@
       padding-bottom: 4rem;
     }
     
-    .southpole-container {
-      @apply px-6; /* 减少移动端左右内边距 */
+    .southpole-container,
+    .container-custom {
+      @apply px-3; /* 减少移动端左右内边距为一半 */
     }
   }
   
@@ -331,8 +332,9 @@
       padding-bottom: 3rem;
     }
     
-    .southpole-container {
-      @apply px-4; /* 更小的内边距 */
+    .southpole-container,
+    .container-custom {
+      @apply px-2; /* 超小屏幕内边距也减少一半 */
     }
     
     /* 网格系统移动端优化 */
