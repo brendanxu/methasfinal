@@ -77,6 +77,9 @@ export function Navigation() {
 
   // 监听滚动，添加微妙的背景变化
   useEffect(() => {
+    // 客户端检查
+    if (typeof window === 'undefined') return;
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };

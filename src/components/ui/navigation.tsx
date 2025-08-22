@@ -207,6 +207,9 @@ export function Navigation() {
   
   // 防止移动端菜单开启时滚动
   useEffect(() => {
+    // 客户端检查
+    if (typeof document === 'undefined') return;
+
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
@@ -214,7 +217,9 @@ export function Navigation() {
     }
     
     return () => {
-      document.body.style.overflow = 'unset';
+      if (typeof document !== 'undefined') {
+        document.body.style.overflow = 'unset';
+      }
     };
   }, [isMobileMenuOpen]);
 

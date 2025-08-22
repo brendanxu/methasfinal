@@ -95,6 +95,9 @@ export function SouthpoleSolutionsSection() {
 
   // 监听滚动，更新活跃步骤
   useEffect(() => {
+    // 客户端检查
+    if (typeof window === 'undefined') return;
+
     const handleScroll = () => {
       const steps = document.querySelectorAll('[data-step]');
       const scrollY = window.scrollY + window.innerHeight / 2;
