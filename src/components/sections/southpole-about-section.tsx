@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { SouthpoleCard, StatsCard } from '@/components/ui/card';
+import { Card, StatsCard } from '@/components/ui/card';
 import { SouthpoleButton } from '@/components/ui/button';
 
 // 团队成员数据
@@ -279,7 +279,7 @@ export function SouthpoleAboutSection() {
               key={value.title}
               variants={animations.fadeUp}
             >
-              <SouthpoleCard variant="ghost" padding="lg">
+              <Card variant="ghost" padding="lg">
                 <div className="text-center">
                   <div className="text-4xl mb-6">{value.icon}</div>
                   <h3 className="southpole-heading-3 text-black mb-4">
@@ -289,7 +289,7 @@ export function SouthpoleAboutSection() {
                     {value.description}
                   </p>
                 </div>
-              </SouthpoleCard>
+              </Card>
             </motion.div>
           ))}
         </motion.div>
