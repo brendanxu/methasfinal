@@ -20,6 +20,12 @@ import {
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ImageUpload from '@/components/admin/ImageUpload';
+import ManagementTools from '@/components/admin/ManagementTools';
+import ContentPreview from '@/components/admin/ContentPreview';
+import DataManager from '@/components/admin/DataManager';
+import SystemSettings from '@/components/admin/SystemSettings';
+import KeyboardShortcuts, { useKeyboardShortcuts } from '@/components/admin/KeyboardShortcuts';
+import OperationHistory, { useOperationHistory } from '@/components/admin/OperationHistory';
 
 // 数据类型定义
 interface ContentData {
@@ -124,6 +130,70 @@ export default function AdminDashboardV2() {
   const [loading, setLoading] = useState(true);
   const [editingItem, setEditingItem] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
+  
+  // 新增状态管理
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filters, setFilters] = useState({
+    status: 'all',
+    category: 'all',
+    dateRange: 'all'
+  });
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewItem, setPreviewItem] = useState<any>(null);
+  const [previewType, setPreviewType] = useState<'hero' | 'services' | 'articles' | 'stats'>('hero');
+  const [showDataManager, setShowDataManager] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [showOperationHistory, setShowOperationHistory] = useState(false);
+  
+  // 操作历史管理
+  const { history, addOperation, undoOperation, clearHistory } = useOperationHistory();
+  
+  // 快捷键支持
+  const { showHelp, setShowHelp, handleShortcut } = useKeyboardShortcuts((action: string) => {
+    switch (action) {
+      case 'goto_hero':
+        setActiveTab('hero');
+        break;
+      case 'goto_services':
+        setActiveTab('services');
+        break;
+      case 'goto_articles':
+        setActiveTab('articles');
+        break;
+      case 'goto_stats':
+        setActiveTab('stats');
+        break;
+      case 'goto_overview':
+        setActiveTab('overview');
+        break;
+      case 'new_content':
+        handleNewContent();
+        break;
+      case 'search':
+        document.getElementById('search-input')?.focus();
+        break;
+      case 'refresh':
+        loadContent();
+        break;
+      case 'open_settings':
+        setShowSettings(true);
+        break;
+      case 'data_manager':
+        setShowDataManager(true);
+        break;
+      case 'bulk_actions':
+        // 显示批量操作面板
+        break;
+      case 'cancel':
+        setShowPreview(false);
+        setShowDataManager(false);
+        setShowSettings(false);
+        setShowHelp(false);
+        setShowOperationHistory(false);
+        break;
+    }
+  });
 
   // 检查登录状态
   useEffect(() => {
@@ -248,6 +318,103 @@ export default function AdminDashboardV2() {
     }
   };
 
+  // 新建内容
+  const handleNewContent = () => {
+    switch (activeTab) {
+      case 'hero':
+        // 触发轮播管理组件的添加功能
+        break;
+      case 'services':
+        // 服务不支持新增，跳过
+        break;
+      case 'articles':
+        // 触发文章管理组件的添加功能
+        break;
+      case 'stats':
+        // 触发统计数据管理组件的添加功能
+        break;
+    }
+  };
+
+  // 批量操作
+  const handleBulkAction = (action: string, items: string[]) => {
+    if (!contentData) return;
+    
+    // 记录操作到历史
+    addOperation({
+      type: action,
+      description: `${action === 'publish' ? '发布' : action === 'draft' ? '转为草稿' : action === 'archive' ? '归档' : action === 'delete' ? '删除' : action}了 ${items.length} 个项目`,
+      items: items,
+      tab: activeTab,
+      metadata: {
+        affectedCount: items.length
+      }
+    });
+    
+    switch (action) {
+      case 'publish':
+        updateItemsStatus(items, 'published');
+        break;
+      case 'draft':
+        updateItemsStatus(items, 'draft');
+        break;
+      case 'archive':
+        updateItemsStatus(items, 'archived');
+        break;
+      case 'delete':
+        if (confirm(`确定要删除 ${items.length} 个项目吗？`)) {
+          deleteItems(items);
+        }
+        break;
+    }
+    
+    setSelectedItems([]);
+  };
+
+  // 更新状态
+  const updateItemsStatus = (itemIds: string[], status: string) => {
+    if (!contentData) return;
+    
+    const updatedContent = { ...contentData };
+    const dataKey = activeTab as keyof typeof contentData.data;
+    
+    if (updatedContent.data[dataKey]) {
+      (updatedContent.data[dataKey] as any[]) = (updatedContent.data[dataKey] as any[]).map(item => 
+        itemIds.includes(item.id) 
+          ? { ...item, status, updatedAt: new Date().toISOString() }
+          : item
+      );
+      saveContent(updatedContent);
+    }
+  };
+
+  // 删除项目
+  const deleteItems = (itemIds: string[]) => {
+    if (!contentData) return;
+    
+    const updatedContent = { ...contentData };
+    const dataKey = activeTab as keyof typeof contentData.data;
+    
+    if (updatedContent.data[dataKey]) {
+      (updatedContent.data[dataKey] as any[]) = (updatedContent.data[dataKey] as any[]).filter(item => 
+        !itemIds.includes(item.id)
+      );
+      saveContent(updatedContent);
+    }
+  };
+
+  // 预览内容
+  const handlePreview = (item: any, type: 'hero' | 'services' | 'articles' | 'stats') => {
+    setPreviewItem(item);
+    setPreviewType(type);
+    setShowPreview(true);
+  };
+
+  // 状态变更
+  const handleStatusChange = (itemId: string, newStatus: string, type: string) => {
+    updateItemsStatus([itemId], newStatus);
+  };
+
   // 退出登录
   const handleLogout = () => {
     localStorage.removeItem('isAdminLoggedIn');
@@ -297,12 +464,44 @@ export default function AdminDashboardV2() {
               <div className="text-sm text-gray-500">
                 最后更新：{new Date(contentData.lastUpdated).toLocaleString('zh-CN')}
               </div>
-              <Button 
-                onClick={handleLogout}
-                className="bg-red-600 hover:bg-red-700 text-white"
-              >
-                退出登录
-              </Button>
+              <div className="flex gap-2">
+                <Button 
+                  onClick={() => setShowDataManager(true)}
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  size="sm"
+                >
+                  数据管理
+                </Button>
+                <Button 
+                  onClick={() => setShowOperationHistory(true)}
+                  className="bg-orange-600 hover:bg-orange-700 text-white"
+                  size="sm"
+                >
+                  <ClockIcon className="w-4 h-4 mr-1" />
+                  历史
+                </Button>
+                <Button 
+                  onClick={() => setShowSettings(true)}
+                  className="bg-gray-600 hover:bg-gray-700 text-white"
+                  size="sm"
+                >
+                  <Cog6ToothIcon className="w-4 h-4 mr-1" />
+                  设置
+                </Button>
+                <Button 
+                  onClick={() => setShowHelp(true)}
+                  className="bg-purple-600 hover:bg-purple-700 text-white"
+                  size="sm"
+                >
+                  ?
+                </Button>
+                <Button 
+                  onClick={handleLogout}
+                  className="bg-red-600 hover:bg-red-700 text-white"
+                >
+                  退出登录
+                </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -443,67 +642,209 @@ export default function AdminDashboardV2() {
 
         {/* 首页轮播管理 */}
         {activeTab === 'hero' && (
-          <HeroManagement 
-            data={contentData.data.hero}
-            onSave={(newData) => {
-              const updatedContent = {
-                ...contentData,
-                data: { ...contentData.data, hero: newData }
-              };
-              saveContent(updatedContent);
-            }}
-          />
+          <div className="space-y-6">
+            <ManagementTools
+              type="hero"
+              items={contentData.data.hero}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              filters={filters}
+              onFiltersChange={setFilters}
+              onBulkAction={handleBulkAction}
+              onPreview={(item) => handlePreview(item, 'hero')}
+            />
+            <HeroManagement 
+              data={contentData.data.hero}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              searchTerm={searchTerm}
+              filters={filters}
+              onPreview={(item) => handlePreview(item, 'hero')}
+              onSave={(newData) => {
+                const updatedContent = {
+                  ...contentData,
+                  data: { ...contentData.data, hero: newData }
+                };
+                saveContent(updatedContent);
+              }}
+            />
+          </div>
         )}
 
         {/* 服务介绍管理 */}
         {activeTab === 'services' && (
-          <ServicesManagement 
-            data={contentData.data.services}
-            onSave={(newData) => {
-              const updatedContent = {
-                ...contentData,
-                data: { ...contentData.data, services: newData }
-              };
-              saveContent(updatedContent);
-            }}
-          />
+          <div className="space-y-6">
+            <ManagementTools
+              type="services"
+              items={contentData.data.services}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              filters={filters}
+              onFiltersChange={setFilters}
+              onBulkAction={handleBulkAction}
+              onPreview={(item) => handlePreview(item, 'services')}
+            />
+            <ServicesManagement 
+              data={contentData.data.services}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              searchTerm={searchTerm}
+              filters={filters}
+              onPreview={(item) => handlePreview(item, 'services')}
+              onSave={(newData) => {
+                const updatedContent = {
+                  ...contentData,
+                  data: { ...contentData.data, services: newData }
+                };
+                saveContent(updatedContent);
+              }}
+            />
+          </div>
         )}
 
         {/* 文章管理 */}
         {activeTab === 'articles' && (
-          <ArticlesManagement 
-            data={contentData.data.articles}
-            categories={contentData.settings.categories.articles}
-            onSave={(newData) => {
-              const updatedContent = {
-                ...contentData,
-                data: { ...contentData.data, articles: newData }
-              };
-              saveContent(updatedContent);
-            }}
-          />
+          <div className="space-y-6">
+            <ManagementTools
+              type="articles"
+              items={contentData.data.articles}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              filters={filters}
+              onFiltersChange={setFilters}
+              onBulkAction={handleBulkAction}
+              onPreview={(item) => handlePreview(item, 'articles')}
+            />
+            <ArticlesManagement 
+              data={contentData.data.articles}
+              categories={contentData.settings.categories.articles}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              searchTerm={searchTerm}
+              filters={filters}
+              onPreview={(item) => handlePreview(item, 'articles')}
+              onSave={(newData) => {
+                const updatedContent = {
+                  ...contentData,
+                  data: { ...contentData.data, articles: newData }
+                };
+                saveContent(updatedContent);
+              }}
+            />
+          </div>
         )}
 
         {/* 统计数据管理 */}
         {activeTab === 'stats' && (
-          <StatsManagement 
-            data={contentData.data.stats}
-            onSave={(newData) => {
-              const updatedContent = {
-                ...contentData,
-                data: { ...contentData.data, stats: newData }
-              };
-              saveContent(updatedContent);
-            }}
-          />
+          <div className="space-y-6">
+            <ManagementTools
+              type="stats"
+              items={contentData.data.stats}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              filters={filters}
+              onFiltersChange={setFilters}
+              onBulkAction={handleBulkAction}
+              onPreview={(item) => handlePreview(item, 'stats')}
+            />
+            <StatsManagement 
+              data={contentData.data.stats}
+              selectedItems={selectedItems}
+              onSelectionChange={setSelectedItems}
+              searchTerm={searchTerm}
+              filters={filters}
+              onPreview={(item) => handlePreview(item, 'stats')}
+              onSave={(newData) => {
+                const updatedContent = {
+                  ...contentData,
+                  data: { ...contentData.data, stats: newData }
+                };
+                saveContent(updatedContent);
+              }}
+            />
+          </div>
         )}
       </div>
+
+      {/* 内容预览模态框 */}
+      <ContentPreview
+        item={previewItem}
+        type={previewType}
+        isOpen={showPreview}
+        onClose={() => setShowPreview(false)}
+        onEdit={() => {
+          setShowPreview(false);
+          // 触发编辑功能
+        }}
+        onStatusChange={(status) => handleStatusChange(previewItem?.id, status, previewType)}
+      />
+
+      {/* 数据管理模态框 */}
+      <DataManager
+        isOpen={showDataManager}
+        onClose={() => setShowDataManager(false)}
+        contentData={contentData}
+        onDataChange={(newData) => {
+          setContentData(newData);
+          saveContent(newData);
+        }}
+      />
+
+      {/* 系统设置模态框 */}
+      <SystemSettings
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+        onSettingsChange={(settings) => {
+          // 处理设置变更
+          console.log('设置已更新:', settings);
+        }}
+      />
+
+      {/* 操作历史模态框 */}
+      <OperationHistory
+        isOpen={showOperationHistory}
+        onClose={() => setShowOperationHistory(false)}
+        history={history}
+        onUndo={undoOperation}
+        onClearHistory={clearHistory}
+      />
+
+      {/* 键盘快捷键帮助 */}
+      <KeyboardShortcuts
+        isOpen={showHelp}
+        onClose={() => setShowHelp(false)}
+        onShortcut={handleShortcut}
+      />
     </div>
   );
 }
 
-// 首页轮播管理组件
-function HeroManagement({ data, onSave }: { data: HeroItem[], onSave: (data: HeroItem[]) => void }) {
+// 首页轮播管理组件  
+function HeroManagement({ 
+  data, 
+  selectedItems,
+  onSelectionChange,
+  searchTerm,
+  filters,
+  onPreview,
+  onSave 
+}: { 
+  data: HeroItem[], 
+  selectedItems?: string[],
+  onSelectionChange?: (items: string[]) => void,
+  searchTerm?: string,
+  filters?: any,
+  onPreview?: (item: HeroItem) => void,
+  onSave: (data: HeroItem[]) => void 
+}) {
   const [items, setItems] = useState<HeroItem[]>(data);
   const [editingItem, setEditingItem] = useState<HeroItem | null>(null);
 
@@ -745,7 +1086,23 @@ function HeroEditModal({ item, onSave, onCancel }: {
 }
 
 // 服务介绍管理组件
-function ServicesManagement({ data, onSave }: { data: ServiceItem[], onSave: (data: ServiceItem[]) => void }) {
+function ServicesManagement({ 
+  data, 
+  selectedItems,
+  onSelectionChange,
+  searchTerm,
+  filters,
+  onPreview,
+  onSave 
+}: { 
+  data: ServiceItem[], 
+  selectedItems?: string[],
+  onSelectionChange?: (items: string[]) => void,
+  searchTerm?: string,
+  filters?: any,
+  onPreview?: (item: ServiceItem) => void,
+  onSave: (data: ServiceItem[]) => void 
+}) {
   const [items, setItems] = useState<ServiceItem[]>(data);
   const [editingItem, setEditingItem] = useState<ServiceItem | null>(null);
 
@@ -959,9 +1316,23 @@ function ServiceEditModal({ item, onSave, onCancel }: {
 }
 
 // 文章管理组件
-function ArticlesManagement({ data, categories, onSave }: { 
+function ArticlesManagement({ 
+  data, 
+  categories, 
+  selectedItems,
+  onSelectionChange,
+  searchTerm,
+  filters,
+  onPreview,
+  onSave 
+}: { 
   data: ArticleItem[], 
   categories: string[], 
+  selectedItems?: string[],
+  onSelectionChange?: (items: string[]) => void,
+  searchTerm?: string,
+  filters?: any,
+  onPreview?: (item: ArticleItem) => void,
   onSave: (data: ArticleItem[]) => void 
 }) {
   const [items, setItems] = useState<ArticleItem[]>(data);
@@ -1341,7 +1712,23 @@ function ArticleEditModal({ item, categories, onSave, onCancel }: {
 }
 
 // 统计数据管理组件
-function StatsManagement({ data, onSave }: { data: StatItem[], onSave: (data: StatItem[]) => void }) {
+function StatsManagement({ 
+  data, 
+  selectedItems,
+  onSelectionChange,
+  searchTerm,
+  filters,
+  onPreview,
+  onSave 
+}: { 
+  data: StatItem[], 
+  selectedItems?: string[],
+  onSelectionChange?: (items: string[]) => void,
+  searchTerm?: string,
+  filters?: any,
+  onPreview?: (item: StatItem) => void,
+  onSave: (data: StatItem[]) => void 
+}) {
   const [items, setItems] = useState<StatItem[]>(data);
   const [editingItem, setEditingItem] = useState<StatItem | null>(null);
 
