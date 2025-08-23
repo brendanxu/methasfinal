@@ -8,6 +8,7 @@ import { Navigation } from '@/components/ui/navigation';
 import { Footer } from '@/components/layout/footer';
 import { generateSEOMetadata, seoTemplates } from '@/components/seo/seo-head';
 import { sanityApi } from '../../../sanity/sanity.client';
+import { getContent } from '@/lib/content';
 import type { HeroSlide, ServiceSection, Statistic, Article } from '@/types/sanity';
 
 export async function generateMetadata({
@@ -23,12 +24,15 @@ export default async function HomePage({
 }: {
   params: { locale: string };
 }) {
-  // 获取动态内容数据
+  // 优先使用简单管理后台的数据，如果没有则使用 Sanity
+  const adminContent = await getContent();
+  
+  // 获取动态内容数据（Sanity 作为备选）
   const [heroSlides, serviceSections, statistics, featuredArticles] = await Promise.all([
-    sanityApi.getHeroSlides().catch(() => []) as Promise<HeroSlide[]>,
-    sanityApi.getServiceSections().catch(() => []) as Promise<ServiceSection[]>,
-    sanityApi.getStatistics().catch(() => []) as Promise<Statistic[]>,
-    sanityApi.getFeaturedArticles().catch(() => []) as Promise<Article[]>,
+    adminContent.hero?.length > 0 ? adminContent.hero : sanityApi.getHeroSlides().catch(() => []) as Promise<HeroSlide[]>,
+    adminContent.services?.length > 0 ? adminContent.services : sanityApi.getServiceSections().catch(() => []) as Promise<ServiceSection[]>,
+    adminContent.stats?.length > 0 ? adminContent.stats : sanityApi.getStatistics().catch(() => []) as Promise<Statistic[]>,
+    adminContent.articles?.length > 0 ? adminContent.articles : sanityApi.getFeaturedArticles().catch(() => []) as Promise<Article[]>,
   ]);
 
   return (

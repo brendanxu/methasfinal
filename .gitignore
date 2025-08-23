@@ -48,3 +48,7 @@ sanity/dist
 
 # OS generated files
 Thumbs.db
+
+# Admin data (keep sample data, ignore production changes)
+data/*.json
+!data/content.json.example
