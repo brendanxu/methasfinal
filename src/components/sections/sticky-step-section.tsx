@@ -113,7 +113,7 @@ function StepVisual({ visual, isActive }: { visual: string; isActive: boolean })
   const config = visualConfig[visual as keyof typeof visualConfig];
 
   return (
-    <div className={`relative w-full h-80 bg-gradient-to-br ${config.bgColor} rounded-xl overflow-hidden`}>
+    <div className={`relative w-full h-96 bg-gradient-to-br ${config.bgColor} rounded-xl overflow-hidden`}>
       {/* 背景装饰 */}
       <motion.div
         className="absolute inset-0 opacity-10"
@@ -132,10 +132,10 @@ function StepVisual({ visual, isActive }: { visual: string; isActive: boolean })
 
       {/* 中心图标 */}
       <motion.div
-        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 ${config.iconBg} rounded-full flex items-center justify-center text-white font-bold text-xl`}
+        className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 ${config.iconBg} rounded-full flex items-center justify-center text-white font-bold text-3xl shadow-lg`}
         initial={{ scale: 0.8, opacity: 0.8 }}
         animate={{ 
-          scale: isActive ? 1.1 : 1, 
+          scale: isActive ? 1.15 : 1, 
           opacity: isActive ? 1 : 0.8 
         }}
         transition={{ 
@@ -149,12 +149,12 @@ function StepVisual({ visual, isActive }: { visual: string; isActive: boolean })
       {/* 动态元素 */}
       <div className="absolute inset-0 flex items-center justify-center">
         {visual === 'monitoring' && (
-          <div className="flex items-end gap-2 h-20">
+          <div className="flex items-end gap-3 h-24">
             {config.elements.map((el, i) => (
               el.type === 'bar' && (
                 <motion.div
                   key={i}
-                  className="w-4 bg-blue-500/60 rounded-t"
+                  className="w-5 bg-blue-500/60 rounded-t shadow-sm"
                   style={{ height: el.height }}
                   initial={{ scaleY: 0.3 }}
                   animate={{ scaleY: isActive ? 1 : 0.5 }}
@@ -175,7 +175,7 @@ function StepVisual({ visual, isActive }: { visual: string; isActive: boolean })
               el.type === 'circle' && (
                 <motion.div
                   key={i}
-                  className="absolute border-2 border-green-500/40 rounded-full"
+                  className="absolute border-3 border-green-500/50 rounded-full shadow-sm"
                   style={{ 
                     width: el.size, 
                     height: el.size,
@@ -200,12 +200,12 @@ function StepVisual({ visual, isActive }: { visual: string; isActive: boolean })
         )}
 
         {visual === 'credits' && (
-          <div className="flex gap-3">
+          <div className="flex gap-4">
             {config.elements.map((el, i) => (
               el.type === 'card' && (
                 <motion.div
                   key={i}
-                  className="h-16 bg-primary/30 rounded-lg border border-primary/40"
+                  className="h-20 bg-primary/30 rounded-lg border border-primary/40 shadow-sm"
                   style={{ width: el.width }}
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ 
@@ -224,12 +224,12 @@ function StepVisual({ visual, isActive }: { visual: string; isActive: boolean })
         )}
 
         {visual === 'compliance' && (
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             {config.elements.map((el, i) => (
               el.type === 'doc' && (
                 <motion.div
                   key={i}
-                  className="w-8 bg-purple-500/30 rounded border border-purple-500/40"
+                  className="w-10 bg-purple-500/30 rounded border border-purple-500/40 shadow-sm"
                   style={{ height: el.height }}
                   initial={{ y: 30, opacity: 0 }}
                   animate={{ 
