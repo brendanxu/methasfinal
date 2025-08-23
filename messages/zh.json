@@ -41,6 +41,88 @@
     "subtitle": "全方位的甲烷减排与碳信用管理服务",
     "homeTitle": "我们的服务",
     "homeSubtitle": "为企业提供端到端的甲烷减排与碳信用管理解决方案",
+    "hero": {
+      "title": "解决方案",
+      "subtitle": "从监测到减排，从合规到变现，提供甲烷管理全链条解决方案"
+    },
+    "services": {
+      "monitoring": {
+        "number": "01",
+        "title": "甲烷监测",
+        "description": "采用先进的传感器技术和AI算法，实现全方位、全天候的甲烷排放监测，为减排决策提供精确数据支撑。",
+        "features": [
+          "实时连续监测，覆盖率达99.5%",
+          "AI智能识别泄漏源，准确率>95%",
+          "多层级预警系统，响应时间<5分钟",
+          "云端数据存储，支持历史追溯"
+        ]
+      },
+      "reduction": {
+        "number": "02",
+        "title": "智能减排",
+        "description": "基于监测数据，提供智能化的减排方案，包括设备优化建议、工艺改进方案和自动控制系统集成。",
+        "features": [
+          "自适应优化算法，减排效果可达50%",
+          "设备健康诊断，预防性维护",
+          "工艺参数智能调节，提升效率",
+          "ROI分析，平均回报周期18个月"
+        ]
+      },
+      "credits": {
+        "number": "03",
+        "title": "碳信用管理",
+        "description": "完整的碳信用生命周期管理，从项目开发、认证申请到交易变现，提供一站式专业服务。",
+        "features": [
+          "符合VCS、CDM等国际标准",
+          "端到端项目管理，成功率>90%",
+          "智能合约交易，透明可追溯",
+          "收益最大化，平均溢价15%"
+        ]
+      },
+      "compliance": {
+        "number": "04",
+        "title": "合规报告",
+        "description": "自动化生成各类环保合规报告，满足政府监管要求，简化企业合规管理流程。",
+        "features": [
+          "自动化报告生成，准确率99.8%",
+          "多标准兼容，覆盖主要法规",
+          "实时合规状态监控",
+          "专业审计支持，通过率100%"
+        ]
+      }
+    },
+    "stats": {
+      "projects": {
+        "value": "500+",
+        "label": "PROJECTS",
+        "description": "成功项目"
+      },
+      "reduction": {
+        "value": "50%",
+        "label": "REDUCTION",
+        "description": "平均减排效果"
+      },
+      "monitoring": {
+        "value": "24/7",
+        "label": "MONITORING",
+        "description": "全天候监测"
+      },
+      "accuracy": {
+        "value": "99.5%",
+        "label": "ACCURACY",
+        "description": "监测精度"
+      }
+    },
+    "complete": {
+      "title": "完整解决方案",
+      "subtitle": "端到端的甲烷管理服务，助力企业实现可持续发展目标"
+    },
+    "cta": {
+      "title": "开始您的减排之旅",
+      "subtitle": "联系我们的专家团队，获取定制化解决方案",
+      "consultation": "免费咨询",
+      "resources": "下载资料"
+    },
     "step1": {
       "title": "监测与检测",
       "description": "使用先进的传感器技术和数据分析，实时监测甲烷排放情况"

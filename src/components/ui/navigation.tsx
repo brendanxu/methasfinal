@@ -3,8 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, usePathname } from '@/i18n/routing';
 import { Button } from '@/components/ui/button';
 
 // ADDX.co 风格的导航动效配置
@@ -254,8 +253,10 @@ export function Navigation() {
   
   // 检查是否是当前路由
   const isCurrentRoute = (href: string) => {
-    if (href === '/' && pathname === '/zh') return true;
-    return pathname.includes(href) && href !== '/';
+    if (href === '/') return pathname === '/';
+    // 移除语言前缀进行比较
+    const cleanPathname = pathname.replace(/^\/(zh|en)/, '');
+    return cleanPathname === href || (cleanPathname.startsWith(href) && href !== '/');
   };
 
   return (

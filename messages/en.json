@@ -10,7 +10,25 @@
     "cases": "Case Studies",
     "insights": "Methas Insights",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "dropdown": {
+      "monitoring": "Monitoring & Detection",
+      "monitoring_desc": "Real-time methane emission monitoring",
+      "reduction": "Reduction Technology",
+      "reduction_desc": "Methane capture and treatment",
+      "verification": "Verification",
+      "verification_desc": "Third-party certification services",
+      "consulting": "Consulting Services",
+      "consulting_desc": "Professional reduction strategies",
+      "technology": "Technology Innovation",
+      "technology_desc": "Latest technology trends",
+      "policy": "Policy Analysis",
+      "policy_desc": "Regulatory policy insights",
+      "market": "Market Dynamics",
+      "market_desc": "Carbon market trends",
+      "case-study": "Case Studies",
+      "case-study_desc": "Real application cases"
+    }
   },
   "hero": {
     "headline": "The Future of Methane Reduction",
@@ -21,6 +39,88 @@
   "solutions": {
     "title": "Solutions",
     "subtitle": "Comprehensive methane reduction and carbon credit management services",
+    "hero": {
+      "title": "Solutions",
+      "subtitle": "From monitoring to reduction, from compliance to monetization, providing comprehensive methane management solutions"
+    },
+    "services": {
+      "monitoring": {
+        "number": "01",
+        "title": "Methane Monitoring",
+        "description": "Utilizing advanced sensor technology and AI algorithms for comprehensive, 24/7 methane emission monitoring, providing precise data support for reduction decisions.",
+        "features": [
+          "Real-time continuous monitoring, 99.5% coverage",
+          "AI intelligent leak source identification, >95% accuracy",
+          "Multi-level warning system, <5 minutes response time",
+          "Cloud data storage, historical tracking supported"
+        ]
+      },
+      "reduction": {
+        "number": "02",
+        "title": "Smart Reduction",
+        "description": "Based on monitoring data, providing intelligent reduction solutions including equipment optimization recommendations, process improvement plans, and automated control system integration.",
+        "features": [
+          "Adaptive optimization algorithm, up to 50% reduction effect",
+          "Equipment health diagnosis, preventive maintenance",
+          "Intelligent process parameter adjustment, improved efficiency",
+          "ROI analysis, average payback period 18 months"
+        ]
+      },
+      "credits": {
+        "number": "03",
+        "title": "Carbon Credit Management",
+        "description": "Complete carbon credit lifecycle management, from project development and certification application to trading monetization, providing one-stop professional services.",
+        "features": [
+          "Compliant with VCS, CDM and other international standards",
+          "End-to-end project management, >90% success rate",
+          "Smart contract trading, transparent and traceable",
+          "Revenue maximization, average 15% premium"
+        ]
+      },
+      "compliance": {
+        "number": "04",
+        "title": "Compliance Reporting",
+        "description": "Automated generation of various environmental compliance reports, meeting government regulatory requirements and simplifying enterprise compliance management processes.",
+        "features": [
+          "Automated report generation, 99.8% accuracy",
+          "Multi-standard compatibility, covering major regulations",
+          "Real-time compliance status monitoring",
+          "Professional audit support, 100% pass rate"
+        ]
+      }
+    },
+    "stats": {
+      "projects": {
+        "value": "500+",
+        "label": "PROJECTS",
+        "description": "Successful Projects"
+      },
+      "reduction": {
+        "value": "50%",
+        "label": "REDUCTION",
+        "description": "Average Reduction Effect"
+      },
+      "monitoring": {
+        "value": "24/7",
+        "label": "MONITORING",
+        "description": "Round-the-Clock Monitoring"
+      },
+      "accuracy": {
+        "value": "99.5%",
+        "label": "ACCURACY",
+        "description": "Monitoring Accuracy"
+      }
+    },
+    "complete": {
+      "title": "Complete Solutions",
+      "subtitle": "End-to-end methane management services, helping enterprises achieve sustainable development goals"
+    },
+    "cta": {
+      "title": "Start Your Reduction Journey",
+      "subtitle": "Contact our expert team to get customized solutions",
+      "consultation": "Free Consultation",
+      "resources": "Download Resources"
+    },
     "step1": {
       "title": "Monitoring & Detection",
       "description": "Real-time methane emission monitoring using advanced sensor technology and data analytics"

@@ -3,77 +3,9 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
+import { Link } from '@/i18n/routing';
 import { SouthpoleCard, StatsCard } from '@/components/ui/card';
 import { SouthpoleButton } from '@/components/ui/button';
-
-// Southpole 风格的服务数据
-const serviceSteps = [
-  {
-    id: 'monitoring',
-    number: '01',
-    title: '甲烷监测',
-    description: '采用先进的传感器技术和AI算法，实现全方位、全天候的甲烷排放监测，为减排决策提供精确数据支撑。',
-    features: [
-      '实时连续监测，覆盖率达99.5%',
-      'AI智能识别泄漏源，准确率>95%',
-      '多层级预警系统，响应时间<5分钟',
-      '云端数据存储，支持历史追溯'
-    ],
-    image: '/images/solutions/monitoring.jpg',
-    href: '#monitoring'
-  },
-  {
-    id: 'reduction',
-    number: '02', 
-    title: '智能减排',
-    description: '基于监测数据，提供智能化的减排方案，包括设备优化建议、工艺改进方案和自动控制系统集成。',
-    features: [
-      '自适应优化算法，减排效果可达50%',
-      '设备健康诊断，预防性维护',
-      '工艺参数智能调节，提升效率',
-      'ROI分析，平均回报周期18个月'
-    ],
-    image: '/images/solutions/reduction.jpg',
-    href: '#reduction'
-  },
-  {
-    id: 'credits',
-    number: '03',
-    title: '碳信用管理', 
-    description: '完整的碳信用生命周期管理，从项目开发、认证申请到交易变现，提供一站式专业服务。',
-    features: [
-      '符合VCS、CDM等国际标准',
-      '端到端项目管理，成功率>90%',
-      '智能合约交易，透明可追溯',
-      '收益最大化，平均溢价15%'
-    ],
-    image: '/images/solutions/credits.jpg',
-    href: '#credits'
-  },
-  {
-    id: 'compliance',
-    number: '04',
-    title: '合规报告',
-    description: '自动化生成各类环保合规报告，满足政府监管要求，简化企业合规管理流程。',
-    features: [
-      '自动化报告生成，准确率99.8%',
-      '多标准兼容，覆盖主要法规',
-      '实时合规状态监控',
-      '专业审计支持，通过率100%'
-    ],
-    image: '/images/solutions/compliance.jpg',
-    href: '#compliance'
-  }
-];
-
-// 统计数据
-const statsData = [
-  { value: '500+', label: 'PROJECTS', description: '成功项目' },
-  { value: '50%', label: 'REDUCTION', description: '平均减排效果' },
-  { value: '24/7', label: 'MONITORING', description: '全天候监测' },
-  { value: '99.5%', label: 'ACCURACY', description: '监测精度' }
-];
 
 // Southpole 极简动效
 const animations = {
@@ -92,6 +24,24 @@ const animations = {
 export function SouthpoleSolutionsSection() {
   const t = useTranslations('solutions');
   const [activeStep, setActiveStep] = useState(0);
+
+  // 使用翻译数据而不是硬编码
+  const serviceSteps = ['monitoring', 'reduction', 'credits', 'compliance'].map((id, index) => ({
+    id,
+    number: t(`services.${id}.number`),
+    title: t(`services.${id}.title`),
+    description: t(`services.${id}.description`),
+    features: t.raw(`services.${id}.features`),
+    image: `/images/solutions/${id}.jpg`,
+    href: `#${id}`
+  }));
+
+  // 统计数据
+  const statsData = ['projects', 'reduction', 'monitoring', 'accuracy'].map(key => ({
+    value: t(`stats.${key}.value`),
+    label: t(`stats.${key}.label`),
+    description: t(`stats.${key}.description`)
+  }));
 
   // 监听滚动，更新活跃步骤
   useEffect(() => {
@@ -126,7 +76,7 @@ export function SouthpoleSolutionsSection() {
             className="southpole-heading-hero text-black mb-8"
             {...animations.fadeUp}
           >
-            解决方案
+            {t('hero.title')}
           </motion.h1>
           <motion.p 
             className="southpole-body-large max-w-2xl mx-auto"
@@ -134,7 +84,7 @@ export function SouthpoleSolutionsSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            从监测到减排，从合规到变现，提供甲烷管理全链条解决方案
+            {t('hero.subtitle')}
           </motion.p>
         </div>
       </section>
@@ -235,7 +185,7 @@ export function SouthpoleSolutionsSection() {
                 >
                   <SouthpoleButton.Link asChild>
                     <Link href={step.href}>
-                      了解详情
+                      {t('common.learnMore')}
                     </Link>
                   </SouthpoleButton.Link>
                 </motion.div>
@@ -279,7 +229,7 @@ export function SouthpoleSolutionsSection() {
             className="southpole-heading-1 text-black mb-6"
             {...animations.fadeUp}
           >
-            完整解决方案
+            {t('complete.title')}
           </motion.h2>
           <motion.p 
             className="southpole-body-large max-w-2xl mx-auto"
@@ -287,7 +237,7 @@ export function SouthpoleSolutionsSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            端到端的甲烷管理服务，助力企业实现可持续发展目标
+            {t('complete.subtitle')}
           </motion.p>
         </div>
 
@@ -319,7 +269,7 @@ export function SouthpoleSolutionsSection() {
             className="southpole-heading-1 text-black mb-8"
             {...animations.fadeUp}
           >
-            开始您的减排之旅
+            {t('cta.title')}
           </motion.h2>
           
           <motion.p 
@@ -328,7 +278,7 @@ export function SouthpoleSolutionsSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            联系我们的专家团队，获取定制化解决方案
+            {t('cta.subtitle')}
           </motion.p>
           
           <motion.div
@@ -339,13 +289,13 @@ export function SouthpoleSolutionsSection() {
           >
             <SouthpoleButton.CTA asChild>
               <Link href="/contact">
-                免费咨询
+                {t('cta.consultation')}
               </Link>
             </SouthpoleButton.CTA>
             
             <SouthpoleButton.Secondary asChild>
               <Link href="/resources">
-                下载资料
+                {t('cta.resources')}
               </Link>
             </SouthpoleButton.Secondary>
           </motion.div>
