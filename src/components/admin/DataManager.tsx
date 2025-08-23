@@ -37,6 +37,36 @@ export default function DataManager({
   const [importStatus, setImportStatus] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const [backups, setBackups] = useState<any[]>([]);
 
+  // 初始化备份数据
+  React.useEffect(() => {
+    if (activeTab === 'backup') {
+      // 模拟备份数据
+      setBackups([
+        {
+          id: 'backup_001',
+          name: '自动备份 - 2024-08-23 10:30',
+          size: '245 KB',
+          created: '2024-08-23T10:30:00Z',
+          type: 'auto'
+        },
+        {
+          id: 'backup_002', 
+          name: '手动备份 - 发布前',
+          size: '238 KB',
+          created: '2024-08-22T15:20:00Z',
+          type: 'manual'
+        },
+        {
+          id: 'backup_003',
+          name: '自动备份 - 2024-08-22 09:15',
+          size: '232 KB',
+          created: '2024-08-22T09:15:00Z',
+          type: 'auto'
+        }
+      ]);
+    }
+  }, [activeTab]);
+
   if (!isOpen) return null;
 
   // 导出功能
@@ -172,35 +202,6 @@ export default function DataManager({
     );
   };
 
-  // 获取备份列表
-  React.useEffect(() => {
-    if (activeTab === 'backup') {
-      // 模拟备份数据
-      setBackups([
-        {
-          id: 'backup_001',
-          name: '自动备份 - 2024-08-23 10:30',
-          size: '245 KB',
-          created: '2024-08-23T10:30:00Z',
-          type: 'auto'
-        },
-        {
-          id: 'backup_002', 
-          name: '手动备份 - 发布前',
-          size: '238 KB',
-          created: '2024-08-22T15:20:00Z',
-          type: 'manual'
-        },
-        {
-          id: 'backup_003',
-          name: '自动备份 - 2024-08-22 09:15',
-          size: '232 KB',
-          created: '2024-08-22T09:15:00Z',
-          type: 'auto'
-        }
-      ]);
-    }
-  }, [activeTab]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">

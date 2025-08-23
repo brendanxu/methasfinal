@@ -38,7 +38,7 @@ export default function AdminDashboard() {
     }
     // 加载已保存的内容
     loadContent();
-  }, []); // router 和 loadContent 是稳定的引用，不需要添加到依赖
+  }, [router]); // Include router in dependencies to satisfy ESLint
 
   const loadContent = async () => {
     setIsLoading(true);

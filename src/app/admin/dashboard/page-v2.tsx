@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import {
@@ -203,10 +203,10 @@ export default function AdminDashboardV2() {
       return;
     }
     loadContent();
-  }, [router]); // loadContent 不变，所以不需要添加到依赖
+  }, [router, loadContent]); // Include loadContent in dependencies
 
   // 加载内容数据
-  const loadContent = async () => {
+  const loadContent = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/content');
       const data = await response.json();
@@ -223,7 +223,7 @@ export default function AdminDashboardV2() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // 转换旧版本数据格式
   const convertLegacyData = (legacyData: any): ContentData => {

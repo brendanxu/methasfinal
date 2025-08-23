@@ -106,12 +106,12 @@ export default function SystemSettings({
     if (savedSettings) {
       try {
         const parsed = JSON.parse(savedSettings);
-        setSettings({ ...settings, ...parsed });
+        setSettings(prevSettings => ({ ...prevSettings, ...parsed }));
       } catch (error) {
         console.error('加载设置失败:', error);
       }
     }
-  }, []);
+  }, []); // settings not needed in dependency array as we use functional update
 
   const updateSetting = (category: string, key: string, value: any) => {
     const newSettings = {
