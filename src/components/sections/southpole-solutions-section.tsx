@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Link } from '@/i18n/routing';
+import { Link } from '../../../i18n/routing';
 import { SouthpoleCard, StatsCard } from '@/components/ui/card';
 import { SouthpoleButton } from '@/components/ui/button';
 
@@ -167,7 +167,7 @@ export function SouthpoleSolutionsSection() {
                   viewport={{ once: true }}
                 >
                   <ul className="space-y-4">
-                    {step.features.map((feature, featureIndex) => (
+                    {step.features.map((feature: string, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-start">
                         <div className="w-1 h-1 bg-black rounded-full mt-3 mr-4 flex-shrink-0" />
                         <span className="southpole-body">{feature}</span>

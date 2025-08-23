@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Link, usePathname } from '@/i18n/routing';
+import { Link, usePathname } from '../../../i18n/routing';
 import { Button } from '@/components/ui/button';
 
 // ADDX.co 风格的导航动效配置
