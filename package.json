@@ -13,7 +13,10 @@
     "analyze": "cross-env ANALYZE=true next build",
     "studio": "sanity dev",
     "studio:build": "sanity build",
-    "studio:deploy": "sanity deploy"
+    "studio:deploy": "sanity deploy",
+    "setup:cms": "node scripts/setup-sanity.js",
+    "cms:admin": "npm run studio",
+    "demo:cms": "node scripts/demo-cms.js"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",

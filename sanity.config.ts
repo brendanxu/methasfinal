@@ -3,6 +3,7 @@ import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
 import { media } from 'sanity-plugin-media'
 import { presentationTool } from 'sanity/presentation'
+import { StudioLogo } from './sanity/components/StudioLogo'
 
 // Import schemas
 import heroSlide from './sanity/schemas/hero-slide'
@@ -10,15 +11,26 @@ import serviceSection from './sanity/schemas/service-section'
 import article from './sanity/schemas/article'
 import statistics from './sanity/schemas/statistics'
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET!
+// Import custom styles
+import './sanity/styles.css'
+
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'dummy'
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 
 export default defineConfig({
   name: 'default',
   title: 'Methas CMS',
+  subtitle: '甲烷减排内容管理系统',
 
   projectId,
   dataset,
+
+  // 自定义 Studio 配置
+  studio: {
+    components: {
+      logo: StudioLogo,
+    }
+  },
 
   plugins: [
     structureTool({
@@ -100,5 +112,27 @@ export default defineConfig({
 
   schema: {
     types: [heroSlide, serviceSection, article, statistics],
+  },
+
+  // 自定义配置
+  form: {
+    // 图片组件的自定义配置
+    image: {
+      assetSources: previousAssetSources => {
+        return previousAssetSources.filter(assetSource => assetSource !== null)
+      }
+    }
+  },
+
+  // 文档操作配置
+  document: {
+    // 自定义预览 URL
+    productionUrl: async (prev, context) => {
+      const { document } = context
+      if (document._type === 'article' && document.slug && typeof document.slug === 'object' && 'current' in document.slug) {
+        return `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/zh/insights/${document.slug.current}`
+      }
+      return prev
+    },
   },
 })

@@ -1,0 +1,146 @@
+/* Southpole 风格的 Sanity Studio 样式 */
+
+/* CSS 变量定义 */
+:root {
+  --studio-white: #ffffff;
+  --studio-black: #000000;
+  
+  /* 主色调 */
+  --studio-brand-primary: #000000;
+  --studio-brand-primary-hover: #333333;
+  
+  /* 背景色 */
+  --studio-bg-primary: #ffffff;
+  --studio-bg-secondary: #fafafa;
+  
+  /* 文本色 */
+  --studio-text-primary: #000000;
+  --studio-text-secondary: #666666;
+  
+  /* 字体 */
+  --studio-font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* 导航栏样式 */
+[data-sanity] [data-ui="Navbar"] {
+  background: var(--studio-black) !important;
+  border-bottom: 1px solid #333333;
+}
+
+[data-sanity] [data-ui="Navbar"] [data-ui="Text"] {
+  color: var(--studio-white) !important;
+  font-family: var(--studio-font-family) !important;
+  font-weight: 600 !important;
+}
+
+/* 侧边栏 */
+[data-sanity] [data-ui="SidebarPanel"] {
+  background: var(--studio-bg-primary) !important;
+  border-right: 1px solid #e5e5e5;
+}
+
+/* 卡片样式 */
+[data-sanity] [data-ui="Card"] {
+  border-radius: 16px !important;
+  transition: all 0.2s ease-out !important;
+}
+
+[data-sanity] [data-ui="Card"]:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 按钮样式 */
+[data-sanity] [data-ui="Button"] {
+  border-radius: 24px !important;
+  font-family: var(--studio-font-family) !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease-out !important;
+}
+
+[data-sanity] [data-ui="Button"][data-mode="primary"] {
+  background: var(--studio-black) !important;
+  border-color: var(--studio-black) !important;
+  color: var(--studio-white) !important;
+}
+
+[data-sanity] [data-ui="Button"][data-mode="primary"]:hover {
+  background: var(--studio-brand-primary-hover) !important;
+}
+
+/* 输入框 */
+[data-sanity] [data-ui="TextInput"], 
+[data-sanity] [data-ui="TextArea"] {
+  border-radius: 16px !important;
+  font-family: var(--studio-font-family) !important;
+  transition: all 0.2s ease-out !important;
+}
+
+[data-sanity] [data-ui="TextInput"]:focus,
+[data-sanity] [data-ui="TextArea"]:focus {
+  border-color: var(--studio-black) !important;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* 标签 */
+[data-sanity] [data-ui="Label"] {
+  font-family: var(--studio-font-family) !important;
+  font-weight: 600 !important;
+  color: var(--studio-text-primary) !important;
+}
+
+/* 文档列表项 */
+[data-sanity] [data-testid="document-list-item"] {
+  border-radius: 12px !important;
+  transition: all 0.2s ease-out !important;
+}
+
+[data-sanity] [data-testid="document-list-item"]:hover {
+  background: var(--studio-bg-secondary) !important;
+}
+
+/* 工具栏 */
+[data-sanity] [data-ui="MenuButton"] {
+  border-radius: 12px !important;
+}
+
+/* 状态徽章 */
+[data-sanity] [data-ui="Badge"] {
+  border-radius: 20px !important;
+  font-family: var(--studio-font-family) !important;
+  font-weight: 500 !important;
+}
+
+/* 成功状态 */
+[data-sanity] [data-tone="positive"] {
+  color: #10b981 !important;
+  background: #f0fdf4 !important;
+  border-color: #10b981 !important;
+}
+
+/* 警告状态 */
+[data-sanity] [data-tone="caution"] {
+  color: #f59e0b !important;
+  background: #fffbeb !important;
+  border-color: #f59e0b !important;
+}
+
+/* 自定义动画 */
+[data-sanity] * {
+  transition: all 0.2s ease-out !important;
+}
+
+/* 确保字体一致性 */
+[data-sanity] * {
+  font-family: var(--studio-font-family) !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  [data-sanity] [data-ui="Card"] {
+    border-radius: 8px !important;
+  }
+  
+  [data-sanity] [data-ui="Button"] {
+    border-radius: 16px !important;
+  }
+}
