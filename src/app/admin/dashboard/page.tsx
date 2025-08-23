@@ -83,6 +83,34 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* 升级提示横幅 */}
+      <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-white/20 rounded-lg p-1">
+              <PhotoIcon className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="font-semibold">🎉 专业版管理后台现已可用！</div>
+              <div className="text-xs opacity-90">
+                包含图片上传、版本控制、内容预览、更专业的界面设计
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <a
+              href="/admin/dashboard/v2"
+              className="bg-white text-blue-600 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors"
+            >
+              立即升级 →
+            </a>
+            <button className="text-white/80 hover:text-white text-sm">
+              稍后提醒
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* 顶部导航 */}
       <header className="bg-black text-white">
         <div className="px-6 py-4 flex items-center justify-between">
