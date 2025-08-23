@@ -195,36 +195,6 @@ export default function AdminDashboardV2() {
     }
   });
 
-  // 检查登录状态
-  useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isAdminLoggedIn');
-    if (!isLoggedIn) {
-      router.push('/admin');
-      return;
-    }
-    loadContent();
-  }, [router, loadContent]); // Include loadContent in dependencies
-
-  // 加载内容数据
-  const loadContent = useCallback(async () => {
-    try {
-      const response = await fetch('/api/admin/content');
-      const data = await response.json();
-      
-      // 如果是旧版本数据，进行转换
-      if (!data.version) {
-        const convertedData = convertLegacyData(data);
-        setContentData(convertedData);
-      } else {
-        setContentData(data);
-      }
-    } catch (error) {
-      console.error('加载数据失败:', error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   // 转换旧版本数据格式
   const convertLegacyData = (legacyData: any): ContentData => {
     return {
@@ -291,6 +261,36 @@ export default function AdminDashboardV2() {
       }
     };
   };
+
+  // 加载内容数据
+  const loadContent = useCallback(async () => {
+    try {
+      const response = await fetch('/api/admin/content');
+      const data = await response.json();
+      
+      // 如果是旧版本数据，进行转换
+      if (!data.version) {
+        const convertedData = convertLegacyData(data);
+        setContentData(convertedData);
+      } else {
+        setContentData(data);
+      }
+    } catch (error) {
+      console.error('加载数据失败:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  // 检查登录状态
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isAdminLoggedIn');
+    if (!isLoggedIn) {
+      router.push('/admin');
+      return;
+    }
+    loadContent();
+  }, [router, loadContent]); // Include loadContent in dependencies
 
   // 保存内容数据
   const saveContent = async (data: ContentData) => {
@@ -644,16 +644,16 @@ export default function AdminDashboardV2() {
         {activeTab === 'hero' && (
           <div className="space-y-6">
             <ManagementTools
-              type="hero"
-              items={contentData.data.hero}
+              itemType="hero"
               selectedItems={selectedItems}
-              onSelectionChange={setSelectedItems}
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              filters={filters}
-              onFiltersChange={setFilters}
+              totalItems={contentData.data.hero.length}
+              onSearch={(query) => setSearchTerm(query)}
+              onFilter={(newFilters) => setFilters(newFilters)}
+              onSort={(sortBy, order) => {
+                // 处理排序逻辑
+                console.log('排序:', sortBy, order);
+              }}
               onBulkAction={handleBulkAction}
-              onPreview={(item) => handlePreview(item, 'hero')}
             />
             <HeroManagement 
               data={contentData.data.hero}
@@ -677,16 +677,16 @@ export default function AdminDashboardV2() {
         {activeTab === 'services' && (
           <div className="space-y-6">
             <ManagementTools
-              type="services"
-              items={contentData.data.services}
+              itemType="services"
               selectedItems={selectedItems}
-              onSelectionChange={setSelectedItems}
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              filters={filters}
-              onFiltersChange={setFilters}
+              totalItems={contentData.data.services.length}
+              onSearch={(query) => setSearchTerm(query)}
+              onFilter={(newFilters) => setFilters(newFilters)}
+              onSort={(sortBy, order) => {
+                // 处理排序逻辑
+                console.log('排序:', sortBy, order);
+              }}
               onBulkAction={handleBulkAction}
-              onPreview={(item) => handlePreview(item, 'services')}
             />
             <ServicesManagement 
               data={contentData.data.services}
@@ -710,16 +710,16 @@ export default function AdminDashboardV2() {
         {activeTab === 'articles' && (
           <div className="space-y-6">
             <ManagementTools
-              type="articles"
-              items={contentData.data.articles}
+              itemType="articles"
               selectedItems={selectedItems}
-              onSelectionChange={setSelectedItems}
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              filters={filters}
-              onFiltersChange={setFilters}
+              totalItems={contentData.data.articles.length}
+              onSearch={(query) => setSearchTerm(query)}
+              onFilter={(newFilters) => setFilters(newFilters)}
+              onSort={(sortBy, order) => {
+                // 处理排序逻辑
+                console.log('排序:', sortBy, order);
+              }}
               onBulkAction={handleBulkAction}
-              onPreview={(item) => handlePreview(item, 'articles')}
             />
             <ArticlesManagement 
               data={contentData.data.articles}
@@ -744,16 +744,16 @@ export default function AdminDashboardV2() {
         {activeTab === 'stats' && (
           <div className="space-y-6">
             <ManagementTools
-              type="stats"
-              items={contentData.data.stats}
+              itemType="stats"
               selectedItems={selectedItems}
-              onSelectionChange={setSelectedItems}
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              filters={filters}
-              onFiltersChange={setFilters}
+              totalItems={contentData.data.stats.length}
+              onSearch={(query) => setSearchTerm(query)}
+              onFilter={(newFilters) => setFilters(newFilters)}
+              onSort={(sortBy, order) => {
+                // 处理排序逻辑
+                console.log('排序:', sortBy, order);
+              }}
               onBulkAction={handleBulkAction}
-              onPreview={(item) => handlePreview(item, 'stats')}
             />
             <StatsManagement 
               data={contentData.data.stats}
@@ -792,9 +792,15 @@ export default function AdminDashboardV2() {
         isOpen={showDataManager}
         onClose={() => setShowDataManager(false)}
         contentData={contentData}
-        onDataChange={(newData) => {
+        onImport={(newData) => {
           setContentData(newData);
           saveContent(newData);
+        }}
+        onBackupRestore={(backupId) => {
+          // 处理备份恢复
+          console.log('恢复备份:', backupId);
+          // 这里应该从备份中加载数据
+          loadContent();
         }}
       />
 
