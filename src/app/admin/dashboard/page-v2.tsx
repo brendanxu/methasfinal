@@ -15,7 +15,10 @@ import {
   CloudArrowUpIcon,
   ClockIcon,
   CheckCircleIcon,
-  XMarkIcon
+  XMarkIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  DocumentDuplicateIcon
 } from '@heroicons/react/24/outline';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -1112,23 +1115,101 @@ function ServicesManagement({
   const [items, setItems] = useState<ServiceItem[]>(data);
   const [editingItem, setEditingItem] = useState<ServiceItem | null>(null);
 
+  // 添加新服务
+  const addItem = () => {
+    const newItem: ServiceItem = {
+      id: `service_${Date.now()}`,
+      step: items.length + 1,
+      title: '',
+      description: '',
+      features: [],
+      image: {
+        url: '',
+        alt: '',
+        width: 800,
+        height: 600
+      },
+      icon: '⚙️',
+      mediaGallery: [],
+      status: 'draft',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    setEditingItem(newItem);
+  };
+
   const editItem = (item: ServiceItem) => {
     setEditingItem(item);
   };
 
   const saveItem = (item: ServiceItem) => {
-    const updatedItems = items.map(i => 
-      i.id === item.id ? { ...item, updatedAt: new Date().toISOString() } : i
-    );
+    const updatedItems = editingItem?.id && items.find(i => i.id === editingItem.id)
+      ? items.map(i => i.id === item.id ? { ...item, updatedAt: new Date().toISOString() } : i)
+      : [...items, { ...item, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }];
+    
     setItems(updatedItems);
     setEditingItem(null);
     onSave(updatedItems);
+  };
+
+  // 删除服务
+  const deleteItem = (id: string) => {
+    if (confirm('确定要删除这个服务项目吗？')) {
+      const updatedItems = items.filter(i => i.id !== id);
+      // 重新排序步骤
+      const reorderedItems = updatedItems.map((item, index) => ({
+        ...item,
+        step: index + 1
+      }));
+      setItems(reorderedItems);
+      onSave(reorderedItems);
+    }
+  };
+
+  // 复制服务
+  const duplicateItem = (item: ServiceItem) => {
+    const newItem: ServiceItem = {
+      ...item,
+      id: `service_${Date.now()}`,
+      title: `${item.title} (复制)`,
+      step: items.length + 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    const updatedItems = [...items, newItem];
+    setItems(updatedItems);
+    onSave(updatedItems);
+  };
+
+  // 移动顺序
+  const moveItem = (id: string, direction: 'up' | 'down') => {
+    const index = items.findIndex(i => i.id === id);
+    if ((direction === 'up' && index === 0) || (direction === 'down' && index === items.length - 1)) {
+      return;
+    }
+    
+    const newItems = [...items];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    [newItems[index], newItems[targetIndex]] = [newItems[targetIndex], newItems[index]];
+    
+    // 更新步骤编号
+    const reorderedItems = newItems.map((item, idx) => ({
+      ...item,
+      step: idx + 1
+    }));
+    
+    setItems(reorderedItems);
+    onSave(reorderedItems);
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-semibold text-gray-900">服务介绍管理</h2>
+        <Button onClick={addItem}>
+          <PlusIcon className="w-5 h-5 mr-2" />
+          添加服务
+        </Button>
       </div>
 
       <div className="grid gap-6">
@@ -1136,38 +1217,109 @@ function ServicesManagement({
           <Card key={item.id} className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <span className="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center text-sm font-medium">
+                <span className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center text-lg font-bold">
                   {item.step}
                 </span>
-                <h3 className="font-medium">{item.title}</h3>
+                <div>
+                  <h3 className="font-medium text-lg">{item.title || '未命名服务'}</h3>
+                  <span className={`inline-block px-2 py-1 rounded-full text-xs mt-1 ${
+                    item.status === 'published' 
+                      ? 'bg-green-100 text-green-800' 
+                      : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {item.status === 'published' ? '已发布' : '草稿'}
+                  </span>
+                </div>
               </div>
-              <Button 
-                size="sm" 
-                onClick={() => editItem(item)}
-                className="bg-blue-600 hover:bg-blue-700"
-              >
-                <PencilIcon className="w-4 h-4 mr-2" />
-                编辑
-              </Button>
+              <div className="flex items-center gap-2">
+                {/* 顺序调整按钮 */}
+                <Button
+                  size="sm"
+                  onClick={() => moveItem(item.id, 'up')}
+                  className="bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  disabled={item.step === 1}
+                >
+                  <ArrowUpIcon className="w-4 h-4" />
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => moveItem(item.id, 'down')}
+                  className="bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  disabled={item.step === items.length}
+                >
+                  <ArrowDownIcon className="w-4 h-4" />
+                </Button>
+                {/* 操作按钮 */}
+                {onPreview && (
+                  <Button
+                    size="sm"
+                    onClick={() => onPreview(item)}
+                    className="bg-purple-600 hover:bg-purple-700"
+                  >
+                    <EyeIcon className="w-4 h-4" />
+                  </Button>
+                )}
+                <Button
+                  size="sm"
+                  onClick={() => duplicateItem(item)}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <DocumentDuplicateIcon className="w-4 h-4" />
+                </Button>
+                <Button 
+                  size="sm" 
+                  onClick={() => editItem(item)}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
+                  <PencilIcon className="w-4 h-4" />
+                </Button>
+                <Button 
+                  size="sm" 
+                  onClick={() => deleteItem(item.id)}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  <TrashIcon className="w-4 h-4" />
+                </Button>
+              </div>
             </div>
-            <div className="flex gap-4">
-              {item.image.url && (
-                <Image
-                  src={item.image.url}
-                  alt={item.image.alt}
-                  width={128}
-                  height={96}
-                  className="w-32 h-24 object-cover rounded-lg"
-                />
+            <div className="flex gap-6">
+              {item.image.url ? (
+                <div className="flex-shrink-0">
+                  <Image
+                    src={item.image.url}
+                    alt={item.image.alt}
+                    width={200}
+                    height={150}
+                    className="w-[200px] h-[150px] object-cover rounded-lg shadow-md"
+                  />
+                </div>
+              ) : (
+                <div className="flex-shrink-0 w-[200px] h-[150px] bg-gray-100 rounded-lg flex items-center justify-center">
+                  <PhotoIcon className="w-12 h-12 text-gray-400" />
+                </div>
               )}
               <div className="flex-1">
-                <p className="text-gray-600 mb-2">{item.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {item.features.map((feature, index) => (
-                    <span key={index} className="px-2 py-1 bg-gray-100 rounded-full text-sm">
-                      {feature}
-                    </span>
-                  ))}
+                <p className="text-gray-700 text-base mb-3 line-clamp-2">{item.description || '暂无描述'}</p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-gray-600">特性：</span>
+                    {item.features.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {item.features.map((feature, index) => (
+                          <span key={index} className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm">
+                            {feature}
+                          </span>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-sm text-gray-400">暂无特性</span>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <span>创建：{new Date(item.createdAt).toLocaleDateString('zh-CN')}</span>
+                    <span>更新：{new Date(item.updatedAt).toLocaleDateString('zh-CN')}</span>
+                    {item.icon && <span>图标：{item.icon}</span>}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1197,6 +1349,7 @@ function ServiceEditModal({ item, onSave, onCancel }: {
     ...item,
     featuresText: item.features.join(', ')
   });
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1218,7 +1371,9 @@ function ServiceEditModal({ item, onSave, onCancel }: {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-semibold">编辑服务步骤</h3>
+          <h3 className="text-lg font-semibold">
+            {item.id && !item.id.includes('service_' + Date.now()) ? '编辑服务' : '添加新服务'}
+          </h3>
           <button onClick={onCancel} className="p-2 hover:bg-gray-100 rounded-lg">
             <XMarkIcon className="w-5 h-5" />
           </button>
@@ -1227,7 +1382,9 @@ function ServiceEditModal({ item, onSave, onCancel }: {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">步骤</label>
+              <label className="block text-sm font-medium mb-2">
+                步骤编号 <span className="text-red-500">*</span>
+              </label>
               <input
                 type="number"
                 value={formData.step}
@@ -1235,17 +1392,25 @@ function ServiceEditModal({ item, onSave, onCancel }: {
                 className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                 min="1"
                 max="10"
+                required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">图标</label>
-              <input
-                type="text"
+              <label className="block text-sm font-medium mb-2">图标表情</label>
+              <select
                 value={formData.icon}
                 onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="⚙️"
-              />
+              >
+                <option value="⚙️">⚙️ 设置</option>
+                <option value="🔬">🔬 显微镜</option>
+                <option value="📊">📊 图表</option>
+                <option value="🌱">🌱 生长</option>
+                <option value="🚀">🚀 火箭</option>
+                <option value="💡">💡 灯泡</option>
+                <option value="✅">✅ 完成</option>
+                <option value="🎯">🎯 目标</option>
+              </select>
             </div>
           </div>
 
@@ -1305,7 +1470,75 @@ function ServiceEditModal({ item, onSave, onCancel }: {
               });
             }}
             category="services"
+            required
           />
+
+          {/* 高级设置 */}
+          <div className="border-t pt-4">
+            <button
+              type="button"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              {showAdvanced ? (
+                <ArrowUpIcon className="w-4 h-4" />
+              ) : (
+                <ArrowDownIcon className="w-4 h-4" />
+              )}
+              高级设置
+            </button>
+            
+            {showAdvanced && (
+              <div className="mt-4 space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">发布状态</label>
+                  <select
+                    value={formData.status}
+                    onChange={(e) => setFormData({ ...formData, status: e.target.value as 'published' | 'draft' })}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="draft">草稿</option>
+                    <option value="published">发布</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">图片描述 (Alt 文本)</label>
+                  <input
+                    type="text"
+                    value={formData.image.alt}
+                    onChange={(e) => setFormData({
+                      ...formData,
+                      image: { ...formData.image, alt: e.target.value }
+                    })}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    placeholder="图片描述文字"
+                  />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">创建时间</label>
+                    <input
+                      type="text"
+                      value={new Date(formData.createdAt).toLocaleString('zh-CN')}
+                      disabled
+                      className="w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">更新时间</label>
+                    <input
+                      type="text"
+                      value={new Date(formData.updatedAt).toLocaleString('zh-CN')}
+                      disabled
+                      className="w-full px-4 py-2 border border-gray-200 rounded-xl bg-gray-50"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="flex gap-3">
             <Button type="submit" className="flex-1">
