@@ -89,84 +89,71 @@ export function SouthpoleSolutionsSection() {
         </div>
       </section>
 
-      {/* Southpole Sticky-Scroll 服务板块 */}
-      <section className="southpole-sticky-section southpole-container py-20">
-        {/* 左侧固定图片 */}
-        <div className="southpole-sticky-media">
-          <motion.div 
-            className="w-full h-full bg-gray-100 flex items-center justify-center"
-            key={activeStep}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            {/* 这里可以放置实际的图片，目前用占位符 */}
-            <div className="text-center">
-              <div className="w-32 h-32 bg-black mx-auto mb-6 flex items-center justify-center rounded-sm">
-                <span className="text-white text-4xl font-light">
-                  {serviceSteps[activeStep]?.number}
-                </span>
-              </div>
-              <div className="southpole-caption">
-                {serviceSteps[activeStep]?.title.toUpperCase()}
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* 右侧滚动内容 */}
-        <div className="southpole-scroll-content">
+      {/* 主要服务板块 - Southpole 简洁风格 */}
+      <section className="southpole-container py-20">
+        <div className="space-y-32">
           {serviceSteps.map((step, index) => (
-            <div 
-              key={step.id} 
-              className="southpole-scroll-step"
-              data-step={index}
+            <motion.div
+              key={step.id}
+              className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-100px" }}
             >
-              <div className="max-w-2xl">
+              {/* 左侧：视觉元素 */}
+              <div className={`${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+                <div className="aspect-square bg-gray-50 flex flex-col items-center justify-center p-12 relative overflow-hidden">
+                  {/* 背景装饰 */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100" />
+                  
+                  {/* 主要视觉 */}
+                  <div className="relative z-10 text-center">
+                    <motion.div
+                      className="w-24 h-24 bg-black rounded-sm flex items-center justify-center mb-8 mx-auto"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <span className="text-white text-3xl font-light">
+                        {step.number}
+                      </span>
+                    </motion.div>
+                    <h3 className="southpole-heading-3 text-black mb-4">
+                      {step.title}
+                    </h3>
+                    <div className="southpole-caption">
+                      {step.title.toUpperCase()}
+                    </div>
+                  </div>
+
+                  {/* 装饰性元素 */}
+                  <div className="absolute top-4 right-4 w-2 h-2 bg-black rounded-full opacity-20" />
+                  <div className="absolute bottom-4 left-4 w-1 h-1 bg-black rounded-full opacity-30" />
+                </div>
+              </div>
+
+              {/* 右侧：内容 */}
+              <div className={`${index % 2 === 1 ? 'lg:order-1' : ''}`}>
                 {/* 步骤编号 */}
-                <motion.div
-                  className="mb-8"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5 }}
-                  viewport={{ once: true }}
-                >
+                <div className="mb-6">
                   <span className="southpole-caption text-gray-400">
                     {step.number}
                   </span>
-                </motion.div>
+                </div>
 
                 {/* 标题 */}
-                <motion.h2 
-                  className="southpole-heading-1 text-black mb-8"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  viewport={{ once: true }}
-                >
+                <h2 className="southpole-heading-1 text-black mb-6">
                   {step.title}
-                </motion.h2>
+                </h2>
 
                 {/* 描述 */}
-                <motion.p 
-                  className="southpole-body-large mb-12"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 }}
-                  viewport={{ once: true }}
-                >
+                <p className="southpole-body-large mb-8">
                   {step.description}
-                </motion.p>
+                </p>
 
                 {/* 特色功能列表 */}
-                <motion.div
-                  className="mb-12"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  viewport={{ once: true }}
-                >
-                  <ul className="space-y-4">
+                <div className="mb-8">
+                  <ul className="space-y-3">
                     {step.features.map((feature: string, featureIndex: number) => (
                       <li key={featureIndex} className="flex items-start">
                         <div className="w-1 h-1 bg-black rounded-full mt-3 mr-4 flex-shrink-0" />
@@ -174,29 +161,34 @@ export function SouthpoleSolutionsSection() {
                       </li>
                     ))}
                   </ul>
-                </motion.div>
+                </div>
 
                 {/* 了解更多链接 */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  viewport={{ once: true }}
-                >
-                  <SouthpoleButton.Link asChild>
-                    <Link href={step.href}>
-                      {t('common.learnMore')}
-                    </Link>
-                  </SouthpoleButton.Link>
-                </motion.div>
+                <SouthpoleButton.Link asChild>
+                  <Link href={step.href}>
+                    了解详情
+                  </Link>
+                </SouthpoleButton.Link>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* 统计数据展示 - Southpole 极简数字 */}
-      <section className="southpole-container southpole-section">
+      <section className="southpole-container py-20 bg-gray-50">
+        <div className="text-center mb-16">
+          <motion.h2 
+            className="southpole-heading-1 text-black mb-6"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            数据实力
+          </motion.h2>
+        </div>
+        
         <motion.div
           className="southpole-grid southpole-grid-4"
           initial={{ opacity: 0, y: 40 }}
@@ -222,45 +214,6 @@ export function SouthpoleSolutionsSection() {
         </motion.div>
       </section>
 
-      {/* 服务网格 - Southpole 3列网格展示 */}
-      <section className="southpole-container southpole-section bg-gray-50">
-        <div className="text-center mb-16">
-          <motion.h2 
-            className="southpole-heading-1 text-black mb-6"
-            {...animations.fadeUp}
-          >
-            {t('complete.title')}
-          </motion.h2>
-          <motion.p 
-            className="southpole-body-large max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            {t('complete.subtitle')}
-          </motion.p>
-        </div>
-
-        <div className="southpole-grid southpole-grid-3">
-          {serviceSteps.slice(0, 3).map((service, index) => (
-            <motion.div
-              key={service.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <SouthpoleCard.Service
-                number={service.number}
-                title={service.title}
-                description={service.description}
-                features={service.features.slice(0, 2)} // 只显示前两个特性
-                href={service.href}
-              />
-            </motion.div>
-          ))}
-        </div>
-      </section>
 
       {/* CTA Section - Southpole 极简风格 */}
       <section className="southpole-container southpole-section">
