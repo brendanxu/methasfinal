@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/(en|zh)/admin/:path*",
+      "destination": "/admin/:path*"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/(en|zh)/admin",
+      "destination": "/admin",
+      "permanent": false
+    }
+  ]
+}
