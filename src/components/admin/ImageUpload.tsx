@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 import { PhotoIcon, XMarkIcon, ArrowUpTrayIcon } from '@heroicons/react/24/outline';
 import { CheckCircleIcon } from '@heroicons/react/24/solid';
 
@@ -119,9 +120,11 @@ export default function ImageUpload({
       {/* 当前图片预览 */}
       {value && (
         <div className="relative inline-block">
-          <img
+          <Image
             src={value}
             alt="已上传图片"
+            width={128}
+            height={128}
             className="w-32 h-32 object-cover rounded-xl border border-gray-200"
           />
           <button

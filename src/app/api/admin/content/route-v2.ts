@@ -224,7 +224,7 @@ function convertLegacyData(legacyData: any) {
         title: item.title,
         description: item.description,
         features: typeof item.features === 'string' 
-          ? item.features.split(', ').filter(f => f.trim())
+          ? item.features.split(', ').filter((f: string) => f.trim())
           : item.features || [],
         image: {
           url: '/api/placeholder/800/600',

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import {
   PhotoIcon,
   DocumentTextIcon,
@@ -132,7 +133,7 @@ export default function AdminDashboardV2() {
       return;
     }
     loadContent();
-  }, [router]);
+  }, [router]); // loadContent 不变，所以不需要添加到依赖
 
   // 加载内容数据
   const loadContent = async () => {
@@ -587,9 +588,11 @@ function HeroManagement({ data, onSave }: { data: HeroItem[], onSave: (data: Her
             </div>
             <div className="flex gap-4">
               {item.image.url && (
-                <img
+                <Image
                   src={item.image.url}
                   alt={item.image.alt}
+                  width={128}
+                  height={80}
                   className="w-32 h-20 object-cover rounded-lg"
                 />
               )}
@@ -786,9 +789,11 @@ function ServicesManagement({ data, onSave }: { data: ServiceItem[], onSave: (da
             </div>
             <div className="flex gap-4">
               {item.image.url && (
-                <img
+                <Image
                   src={item.image.url}
                   alt={item.image.alt}
+                  width={128}
+                  height={96}
                   className="w-32 h-24 object-cover rounded-lg"
                 />
               )}
@@ -1039,9 +1044,11 @@ function ArticlesManagement({ data, categories, onSave }: {
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-start gap-4 flex-1">
                   {article.coverImage.url && (
-                    <img
+                    <Image
                       src={article.coverImage.url}
                       alt={article.coverImage.alt}
+                      width={96}
+                      height={64}
                       className="w-24 h-16 object-cover rounded-lg flex-shrink-0"
                     />
                   )}
